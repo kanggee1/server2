@@ -1,0 +1,71 @@
+name: Build Vless Worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      WORKER_NAME:
+        description: "Name of your worker"
+        required: true
+        type: string
+      DOMAIN_NAME:
+        description: "Name of your domain (not subdomain) at CF"
+        required: true
+        type: string
+        default: geol.my.id
+      UUID:
+        description: "Your UUID or auto for autogenerate"
+        required: false
+        type: string
+        default: 6e6cb97e-57ac-4e8f-ad90-2b2fbb21bc45
+      PROXYIP:
+        description: "Valid IP proxy"
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install and Update Wrangler
+        run: |
+          npm uninstall -g @cloudflare/wrangler || true
+          npm install -g wrangler
+
+      - name: Check Wrangler Version
+        run: wrangler --version
+
+      - name: Process Variables
+        run: |
+          WORKER_NAME=${{ github.event.inputs.WORKER_NAME }}
+          echo "[+] WORKER_NAME: ${WORKER_NAME}"
+          sed -i "s/%worker_name%/${WORKER_NAME}/g" ./vless/wrangler.toml
+          DOMAIN_NAME=${{ github.event.inputs.DOMAIN_NAME }}
+          SUBDOMAIN="${WORKER_NAME}.${DOMAIN_NAME}"
+          echo "[+] SUBDOMAIN: ${SUBDOMAIN}"
+          sed -i "s/%subdomain_name%/${SUBDOMAIN}/g" ./vless/wrangler.toml
+          UUID=${{ github.event.inputs.UUID }}
+          [[ "${UUID}" == "auto" ]] && UUID=$(uuidgen -r)
+          echo "[+] UUID: ${UUID}"
+          sed -i "s/%uuid%/${UUID}/g" ./vless/wrangler.toml
+          PROXYIP=${{ github.event.inputs.PROXYIP }}
+          echo "[+] PROXYIP: ${PROXYIP}"
+          sed -i "s/%proxyip%/${PROXYIP}/g" ./vless/wrangler.toml
+
+      - name: List Files in vless
+        run: ls -R vless
+
+      - name: Change Directory and Deploy
+        run: |
+          cd vless
+          wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
