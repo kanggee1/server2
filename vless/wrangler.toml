@@ -1,5 +1,5 @@
 name = "%worker_name%"
-main = "vless.js"  # Path relatif dari lokasi wrangler.toml
+main = "_worker.js"
 compatibility_date = "2023-05-26"
 
 routes = [
@@ -19,6 +19,7 @@ routes = [
 workers_dev = false
 
 [vars]
-UUID = "%uuid%"
-PROXYIP = "%proxyip%"
-DNS_RESOLVER_URL = "https://dns.cloudflare.com/dns-query"
+CHECK_API_BASE = "%CHECK_API_BASE%"
+#UUID = "%uuid%"
+#PROXYIP = "%proxyip%"
+#DNS_RESOLVER_URL = "https://dns.cloudflare.com/dns-query"
