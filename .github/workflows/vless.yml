@@ -11,16 +11,12 @@ on:
         description: "Name of your domain (not subdomain) at CF"
         required: true
         type: string
-        default: geol.my.id
-      UUID:
-        description: "Your UUID or auto for autogenerate"
+        default: gpj.us.kg
+      CHECK_API_BASE:
+        description: "Your API BASE"
         required: false
         type: string
-        default: 6e6cb97e-57ac-4e8f-ad90-2b2fbb21bc45
-      PROXYIP:
-        description: "Valid IP proxy"
-        required: true
-        type: string
+        default: https://check.installer.us.kg
 
 jobs:
   build:
@@ -32,7 +28,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 'lts/*'
 
       - name: Install and Update Wrangler
         run: |
@@ -45,19 +41,14 @@ jobs:
       - name: Process Variables
         run: |
           WORKER_NAME=${{ github.event.inputs.WORKER_NAME }}
-          echo "[+] WORKER_NAME: ${WORKER_NAME}"
-          sed -i "s/%worker_name%/${WORKER_NAME}/g" ./vless/wrangler.toml
           DOMAIN_NAME=${{ github.event.inputs.DOMAIN_NAME }}
           SUBDOMAIN="${WORKER_NAME}.${DOMAIN_NAME}"
+          
+          # Replace placeholders in wrangler.toml
+          echo "[+] WORKER_NAME: ${WORKER_NAME}"
+          sed -i "s/%worker_name%/${WORKER_NAME}/g" ./vless/wrangler.toml
           echo "[+] SUBDOMAIN: ${SUBDOMAIN}"
           sed -i "s/%subdomain_name%/${SUBDOMAIN}/g" ./vless/wrangler.toml
-          UUID=${{ github.event.inputs.UUID }}
-          [[ "${UUID}" == "auto" ]] && UUID=$(uuidgen -r)
-          echo "[+] UUID: ${UUID}"
-          sed -i "s/%uuid%/${UUID}/g" ./vless/wrangler.toml
-          PROXYIP=${{ github.event.inputs.PROXYIP }}
-          echo "[+] PROXYIP: ${PROXYIP}"
-          sed -i "s/%proxyip%/${PROXYIP}/g" ./vless/wrangler.toml
 
       - name: List Files in vless
         run: ls -R vless
