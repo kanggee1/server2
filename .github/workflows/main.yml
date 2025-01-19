@@ -19,13 +19,16 @@ jobs:
       - name: Install Bun
         run: |
           curl -fsSL https://bun.sh/install | bash
-          echo 'export PATH="$HOME/.bun/bin:$PATH"' >> $GITHUB_ENV
+          export BUN_BIN="$HOME/.bun/bin"
+          echo "BUN_BIN=$BUN_BIN" >> $GITHUB_ENV
+          echo 'export PATH="$BUN_BIN:$PATH"' >> $GITHUB_ENV
           source $GITHUB_ENV
           bun --version # Verifikasi instalasi Bun
 
       # Jalankan Skrip
       - name: Run Proxy Checker
         run: |
+          source $GITHUB_ENV
           bun proxyChecker.ts
 
       # Upload hasil file ke repositori
