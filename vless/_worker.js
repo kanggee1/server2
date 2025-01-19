@@ -1,6 +1,6 @@
 import { connect } from "cloudflare:sockets";
 
-const proxyListURL = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/proxyList.txt?token=GHSAT0AAAAAAC4F7GKIFVZECH7A5O7VIPTOZ4M3ORA';
+const proxyListURL = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/proxyList.txt';
 const namaWeb = 'GEO PROJECT'
 const telegramku = 'https://t.me/sampiiiiu'
 const wildcards = [
