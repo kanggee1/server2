@@ -19,7 +19,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
       - name: Start Scan
         run: |
-          bun install && bun run ./vless/proxyChecker.ts
+          bun install && bun run ./vless/proxyip.ts
       - name: Publish Result
         if: ${{ success() }}
         uses: EndBug/add-and-commit@v9
