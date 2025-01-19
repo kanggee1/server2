@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout kode sumber dari repositori
+      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -19,21 +19,20 @@ jobs:
       - name: Install Bun
         run: |
           curl -fsSL https://bun.sh/install | bash
-          export PATH="$HOME/.bun/bin:$PATH"
-          echo "PATH=$HOME/.bun/bin:$PATH" >> $GITHUB_ENV
-          ~/.bun/bin/bun --version # Verifikasi instalasi Bun
+          echo "export PATH=$HOME/.bun/bin:$PATH" >> $GITHUB_ENV
+          source $GITHUB_ENV
+          bun --version # Verify Bun installation
 
-      # Pindah ke folder vless dan jalankan skrip
+      # Run script from the vless directory
       - name: Run Proxy Checker
-        working-directory: ./vless
         run: |
-          export PATH="$HOME/.bun/bin:$PATH"
-          ~/.bun/bin/bun proxyChecker.ts
+          cd ./vless
+          bun proxyChecker.ts
 
-      # Upload hasil file ke repositori
+      # Commit and Push Results
       - name: Commit and Push Results
-        working-directory: ./vless
         run: |
+          cd ./vless
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add kvProxyList.json proxyList.txt
