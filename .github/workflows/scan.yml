@@ -5,9 +5,6 @@ on:
   schedule:
     - cron: "0 */6 * * *"
 
-permissions:
-  contents: write
-
 jobs:
   scanner:
     runs-on: ubuntu-latest
@@ -15,20 +12,28 @@ jobs:
       group: proxy-scan
 
     steps:
-      - uses: actions/checkout@v3
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Install Bun
       - name: Use Bun
         uses: oven-sh/setup-bun@v2
+
+      # Run proxy scanner
       - name: Start Scan
         run: |
           bun install && bun run ./vless/proxyip.ts
+
+      # Publish the result
       - name: Publish Result
         if: ${{ success() }}
         uses: EndBug/add-and-commit@v9
         with:
           add: '["./*List.txt", "./*List.json"]'
-          default_author: github-actions
+          default_author: github_actor # Menggunakan akun GitHub yang menjalankan workflow
           fetch: false
           tag_push: "--force"
           message: "Update proxy list"
