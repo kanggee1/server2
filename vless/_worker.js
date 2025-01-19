@@ -1,6 +1,6 @@
 import { connect } from "cloudflare:sockets";
 
-const proxyListURL = 'https://raw.githubusercontent.com/jaka2m/worker/main/output.txt';
+const proxyListURL = 'https://installer.us.kg/output.txt';
 const namaWeb = 'GEO PROJECT'
 const telegramku = 'https://t.me/sampiiiiu'
 const wildcards = [
