@@ -12,20 +12,31 @@ jobs:
       group: proxy-scan
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GIT_TOKEN }}
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Configure git
+      - name: Configure Git
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Setup Bun
       - name: Use Bun
         uses: oven-sh/setup-bun@v2
+
+      # Run the scanner script
       - name: Start Scan
         run: |
-          bun install && bun run ./vless/proxyChecker.ts
+          bun install
+          bun run ./vless/proxyChecker.ts
+
+      # Publish the results
       - name: Publish Result
         if: ${{ success() }}
         uses: EndBug/add-and-commit@v9
         with:
-          add: '["./*List.txt", "./*List.json"]'
-          default_author: github_actions
-          fetch: false
-          tag_push: "--force"
+          add: './vless/*List.{txt,json}'
           message: "Update proxy list"
+          default_author: github-actions
