@@ -12,12 +12,6 @@ on:
         required: true
         type: string
         default: gpj.us.kg
-      CHECK_API_BASE:
-        description: "Your API BASE"
-        required: false
-        type: string
-        default: https://check.installer.us.kg
-
 jobs:
   build:
     name: Build and Deploy
