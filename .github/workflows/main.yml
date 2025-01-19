@@ -15,18 +15,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Install Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
       # Install Bun
       - name: Install Bun
         run: |
           curl -fsSL https://bun.sh/install | bash
           echo 'export PATH="$HOME/.bun/bin:$PATH"' >> $GITHUB_ENV
           source $GITHUB_ENV
+          bun --version # Verifikasi instalasi Bun
 
       # Jalankan Skrip
       - name: Run Proxy Checker
