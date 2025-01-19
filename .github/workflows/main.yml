@@ -1,40 +1,31 @@
-name: Proxy Checker
+name: Proxy Scanner
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
 
 jobs:
-  run-script:
+  scanner:
     runs-on: ubuntu-latest
+    concurrency:
+      group: proxy-scan
 
     steps:
-      # Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # Install Bun
-      - name: Install Bun
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GIT_TOKEN }}
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Start Scan
         run: |
-          curl -fsSL https://bun.sh/install | bash
-          echo "export PATH=$HOME/.bun/bin:$PATH" >> $GITHUB_ENV
-          echo "export PATH=$HOME/.bun/bin:$PATH" >> $GITHUB_PATH
-          bun --version # Verify Bun installation
-
-      # Run script from the vless directory
-      - name: Run Proxy Checker
-        run: |
-          cd ./vless
-          bun proxyChecker.ts
-
-      # Commit and Push Results
-      - name: Commit and Push Results
-        run: |
-          cd ./vless
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add kvProxyList.json proxyList.txt
-          git commit -m "Update proxy results"
-          git push
+          bun install && bun run ./vless/proxyChecker.ts
+      - name: Publish Result
+        if: ${{ success() }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: '["./*List.txt", "./*List.json"]'
+          default_author: github_actions
+          fetch: false
+          tag_push: "--force"
+          message: "Update proxy list"
