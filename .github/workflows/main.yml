@@ -19,20 +19,20 @@ jobs:
       - name: Install Bun
         run: |
           curl -fsSL https://bun.sh/install | bash
-          export BUN_BIN="$HOME/.bun/bin"
-          echo "BUN_BIN=$BUN_BIN" >> $GITHUB_ENV
-          echo 'export PATH="$BUN_BIN:$PATH"' >> $GITHUB_ENV
-          source $GITHUB_ENV
-          bun --version # Verifikasi instalasi Bun
+          export PATH="$HOME/.bun/bin:$PATH"
+          echo "PATH=$HOME/.bun/bin:$PATH" >> $GITHUB_ENV
+          ~/.bun/bin/bun --version # Verifikasi instalasi Bun
 
-      # Jalankan Skrip
+      # Pindah ke folder vless dan jalankan skrip
       - name: Run Proxy Checker
+        working-directory: ./vless
         run: |
-          source $GITHUB_ENV
-          bun proxyChecker.ts
+          export PATH="$HOME/.bun/bin:$PATH"
+          ~/.bun/bin/bun proxyChecker.ts
 
       # Upload hasil file ke repositori
       - name: Commit and Push Results
+        working-directory: ./vless
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
