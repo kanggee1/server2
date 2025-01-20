@@ -1123,16 +1123,6 @@ async function handleWebRequest(request) {
         const ipPort = `${config.ip}:${config.port}`;
         const healthCheckUrl = `${CHECK_API}${ipPort}`;
 
-        return {
-            uuid,
-            config,
-            modifiedHostName,
-            healthCheckUrl,
-            configType
-        };
-    });
-}
-
         if (configType === 'tls') {
             return `
                 <tr class="config-row">
