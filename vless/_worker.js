@@ -999,123 +999,139 @@ async function handleWebRequest(request) {
     const apiUrl = proxyListURL;
 
     const fetchConfigs = async () => {
-      try {
-        const response = await fetch(apiUrl);
-        const text = await response.text();
-        
-        let pathCounters = {};
+        try {
+            const response = await fetch(apiUrl);
+            const text = await response.text();
 
-        const configs = text.trim().split('\n').map((line) => {
-          const [ip, port, countryCode, isp] = line.split(',');
-          
-          if (!pathCounters[countryCode]) {
-            pathCounters[countryCode] = 1;
-          }
-          const path = `/${countryCode}${pathCounters[countryCode]}`;
-          pathCounters[countryCode]++;
+            let pathCounters = {};
 
-          return { ip, port, countryCode, isp, path };
-        });
+            const configs = text.trim().split('\n').map((line) => {
+                const [ip, port, countryCode, isp] = line.split(',');
 
-        return configs;
-      } catch (error) {
-        console.error('Error fetching configurations:', error);
-        return [];
-      }
+                if (!pathCounters[countryCode]) {
+                    pathCounters[countryCode] = 1;
+                }
+                const path = `/${countryCode || "Unknown"}${pathCounters[countryCode]}`;
+                pathCounters[countryCode]++;
+
+                return {
+                    ip: ip || "0.0.0.0",
+                    port: port || "0",
+                    countryCode: countryCode || "Unknown",
+                    isp: isp || "Unknown",
+                    path
+                };
+            });
+
+            return configs;
+        } catch (error) {
+            console.error('Error fetching configurations:', error);
+            return [];
+        }
     };
 
     const generateUUIDv4 = () => {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        const r = (Math.random() * 16) | 0;
-        const v = c === 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      });
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            const r = (Math.random() * 16) | 0;
+            const v = c === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        });
     };
 
-function buildCountryFlag() {
-  const flagList = cachedProxyList.map((proxy) => proxy.country || "Unknown");
-  const uniqueFlags = new Set(flagList);
+    function buildCountryFlag() {
+        const flagList = cachedProxyList.map((proxy) => proxy.country || "Unknown");
+        const uniqueFlags = new Set(flagList);
 
-  let flagElement = "";
-  for (const flag of uniqueFlags) {
-    if (flag && typeof flag === "string" && flag !== "Unknown") {
-      try {
-        flagElement += `<a href="/web?page=${page}&search=${flag}" class="py-1">
-      <img width="35"
-        style="bg-dark margin-right: 8px; border: 3px solid transparent; border-radius: 50%; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); flex-shrink: 0; max-width: 55px; max-height: 55px; background: linear-gradient(90deg, #39ff14, #008080); border-image: linear-gradient(90deg, #39ff14, #008080) 1;"
-        src="https://hatscripts.github.io/circle-flags/flags/${flag.toLowerCase()}.svg" />
-        </a>`;
-      } catch (err) {
-        console.error(`Error generating flag for country: ${flag}`, err);
-      }
+        let flagElement = "";
+        for (const flag of uniqueFlags) {
+            if (flag && typeof flag === "string" && flag !== "Unknown") {
+                try {
+                    flagElement += `<a href="/web?page=${page}&search=${flag}" class="py-1">
+                    <img width="35"
+                        style="bg-dark margin-right: 8px; border: 3px solid transparent; border-radius: 50%; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); flex-shrink: 0; max-width: 55px; max-height: 55px; background: linear-gradient(90deg, #39ff14, #008080); border-image: linear-gradient(90deg, #39ff14, #008080) 1;"
+                        src="https://hatscripts.github.io/circle-flags/flags/${flag?.toLowerCase()}.svg" />
+                        </a>`;
+                } catch (err) {
+                    console.error(`Error generating flag for country: ${flag}`, err);
+                }
+            }
+        }
+
+        return flagElement;
     }
-  }
 
-  return flagElement;
+    const getFlagEmoji = (countryCode) => {
+        if (!countryCode) return "🏳️";
+        return countryCode
+            .toUpperCase()
+            .split("")
+            .map((char) => String.fromCodePoint(0x1f1e6 - 65 + char.charCodeAt(0)))
+            .join("");
+    };
+
+    const url = new URL(request.url);
+    const hostName = url.hostname;
+    const page = parseInt(url.searchParams.get("page")) || 1;
+    const searchQuery = url.searchParams.get("search") || "";
+    const selectedWildcard = url.searchParams.get("wildcard") || null;
+    const selectedConfigType = url.searchParams.get("configType") || "tls"; // Ambil nilai 'configType' atau gunakan default 'tls'
+    const configsPerPage = 30;
+
+    const configs = await fetchConfigs();
+    const totalConfigs = configs.length;
+
+    let filteredConfigs = configs;
+    if (searchQuery.includes(":")) {
+        // Search by IP:PORT format
+        filteredConfigs = configs.filter((config) =>
+            `${config.ip}:${config.port}`.includes(searchQuery)
+        );
+    } else if (searchQuery.length === 2) {
+        // Search by country code (if it's two characters)
+        filteredConfigs = configs.filter(
+            (config) =>
+                config.countryCode &&
+                config.countryCode.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    } else if (searchQuery.length > 2) {
+        // Search by IP, ISP, or country code
+        filteredConfigs = configs.filter(
+            (config) =>
+                (config.ip && config.ip.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (`${config.ip}:${config.port}`.includes(searchQuery.toLowerCase())) ||
+                (config.isp && config.isp.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+    }
+
+    const totalFilteredConfigs = filteredConfigs.length;
+    const totalPages = Math.ceil(totalFilteredConfigs / configsPerPage);
+    const startIndex = (page - 1) * configsPerPage;
+    const endIndex = Math.min(startIndex + configsPerPage, totalFilteredConfigs);
+    const visibleConfigs = filteredConfigs.slice(startIndex, endIndex);
+
+    const configType = url.searchParams.get("configType") || "tls";
+
+    const tableRows = visibleConfigs.map((config) => {
+        const uuid = generateUUIDv4();
+        const wildcard = selectedWildcard || hostName;
+        const modifiedHostName = selectedWildcard
+            ? `${selectedWildcard}.${hostName}`
+            : hostName;
+        const url = new URL(request.url);
+        const BASE_URL = `https://${url.hostname}`;
+        const CHECK_API = `${BASE_URL}/geo-ip?ip=`;
+        const ipPort = `${config.ip}:${config.port}`;
+        const healthCheckUrl = `${CHECK_API}${ipPort}`;
+
+        return {
+            uuid,
+            config,
+            modifiedHostName,
+            healthCheckUrl,
+            configType
+        };
+    });
 }
-
-const getFlagEmoji = (countryCode) => {
-  if (!countryCode) return "🏳️";
-  return countryCode
-    .toUpperCase()
-    .split("")
-    .map((char) => String.fromCodePoint(0x1f1e6 - 65 + char.charCodeAt(0)))
-    .join("");
-};
-
-const url = new URL(request.url);
-const hostName = url.hostname;
-const page = parseInt(url.searchParams.get("page")) || 1;
-const searchQuery = url.searchParams.get("search") || "";
-const selectedWildcard = url.searchParams.get("wildcard") || null;
-const selectedConfigType = url.searchParams.get("configType") || "tls"; // Ambil nilai 'configType' atau gunakan default 'tls'
-const configsPerPage = 30;
-
-const configs = await fetchConfigs();
-const totalConfigs = configs.length;
-
-let filteredConfigs = configs;
-if (searchQuery.includes(":")) {
-  // Search by IP:PORT format
-  filteredConfigs = configs.filter((config) =>
-    `${config.ip}:${config.port}`.includes(searchQuery)
-  );
-} else if (searchQuery.length === 2) {
-  // Search by country code (if it's two characters)
-  filteredConfigs = configs.filter(
-    (config) =>
-      config.countryCode &&
-      config.countryCode.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-} else if (searchQuery.length > 2) {
-  // Search by IP, ISP, or country code
-  filteredConfigs = configs.filter(
-    (config) =>
-      (config.ip && config.ip.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (`${config.ip}:${config.port}`.includes(searchQuery.toLowerCase())) ||
-      (config.isp && config.isp.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
-}
-
-const totalFilteredConfigs = filteredConfigs.length;
-const totalPages = Math.ceil(totalFilteredConfigs / configsPerPage);
-const startIndex = (page - 1) * configsPerPage;
-const endIndex = Math.min(startIndex + configsPerPage, totalFilteredConfigs);
-const visibleConfigs = filteredConfigs.slice(startIndex, endIndex);
-
-const configType = url.searchParams.get("configType") || "tls";
-
-const tableRows = visibleConfigs.map((config) => {
-  const uuid = generateUUIDv4();
-  const wildcard = selectedWildcard || hostName;
-  const modifiedHostName = selectedWildcard
-    ? `${selectedWildcard}.${hostName}`
-    : hostName;
-  const url = new URL(request.url);
-  const BASE_URL = `https://${url.hostname}`;
-  const CHECK_API = `${BASE_URL}/geo-ip?ip=`;
-  const ipPort = `${config.ip}:${config.port}`;
-  const healthCheckUrl = `${CHECK_API}${ipPort}`;
 
         if (configType === 'tls') {
             return `
