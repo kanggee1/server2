@@ -9,8 +9,9 @@ on:
         type: string
       DOMAIN_NAME:
         description: "🏠 Domain Name on Cloudflare"
-        required: true
+        required: false
         type: string
+        default: gpj.us.kg
 
 jobs:
   deploy:
