@@ -1033,12 +1033,12 @@ async function handleWebRequest(request) {
     };
 
 function buildCountryFlag() {
-  const flagList = cachedProxyList.map((proxy) => proxy.country);
+  const flagList = cachedProxyList.map((proxy) => proxy.country || "Unknown");
   const uniqueFlags = new Set(flagList);
 
   let flagElement = "";
   for (const flag of uniqueFlags) {
-    if (flag && flag !== "Unknown") {
+    if (flag && typeof flag === "string" && flag !== "Unknown") {
       try {
         flagElement += `<a href="/web?page=${page}&search=${flag}" class="py-1">
       <img width="35"
@@ -1054,64 +1054,68 @@ function buildCountryFlag() {
   return flagElement;
 }
 
-    const getFlagEmoji = (countryCode) => {
-      if (!countryCode) return '🏳️';
-      return countryCode
-        .toUpperCase()
-        .split('')
-        .map((char) => String.fromCodePoint(0x1f1e6 - 65 + char.charCodeAt(0)))
-        .join('');
-    };
+const getFlagEmoji = (countryCode) => {
+  if (!countryCode) return "🏳️";
+  return countryCode
+    .toUpperCase()
+    .split("")
+    .map((char) => String.fromCodePoint(0x1f1e6 - 65 + char.charCodeAt(0)))
+    .join("");
+};
 
-    const url = new URL(request.url);
-    const hostName = url.hostname;
-    const page = parseInt(url.searchParams.get('page')) || 1;
-    const searchQuery = url.searchParams.get('search') || '';
-    const selectedWildcard = url.searchParams.get('wildcard') || null;
-    const selectedConfigType = url.searchParams.get('configType') || 'tls'; // Ambil nilai 'configType' atau gunakan default 'tls'
-    const configsPerPage = 30;
+const url = new URL(request.url);
+const hostName = url.hostname;
+const page = parseInt(url.searchParams.get("page")) || 1;
+const searchQuery = url.searchParams.get("search") || "";
+const selectedWildcard = url.searchParams.get("wildcard") || null;
+const selectedConfigType = url.searchParams.get("configType") || "tls"; // Ambil nilai 'configType' atau gunakan default 'tls'
+const configsPerPage = 30;
 
-    const configs = await fetchConfigs();
-    const totalConfigs = configs.length;
+const configs = await fetchConfigs();
+const totalConfigs = configs.length;
 
-    let filteredConfigs = configs;
-    if (searchQuery.includes(':')) {
-        // Search by IP:PORT format
-        filteredConfigs = configs.filter((config) => 
-            `${config.ip}:${config.port}`.includes(searchQuery)
-        );
-    } else if (searchQuery.length === 2) {
-        // Search by country code (if it's two characters)
-        filteredConfigs = configs.filter((config) =>
-            config.countryCode.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    } else if (searchQuery.length > 2) {
-        // Search by IP, ISP, or country code
-        filteredConfigs = configs.filter((config) =>
-            config.ip.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (`${config.ip}:${config.port}`).includes(searchQuery.toLowerCase()) ||
-            config.isp.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    }
-     
-    const totalFilteredConfigs = filteredConfigs.length;
-    const totalPages = Math.ceil(totalFilteredConfigs / configsPerPage);
-    const startIndex = (page - 1) * configsPerPage;
-    const endIndex = Math.min(startIndex + configsPerPage, totalFilteredConfigs);
-    const visibleConfigs = filteredConfigs.slice(startIndex, endIndex);
+let filteredConfigs = configs;
+if (searchQuery.includes(":")) {
+  // Search by IP:PORT format
+  filteredConfigs = configs.filter((config) =>
+    `${config.ip}:${config.port}`.includes(searchQuery)
+  );
+} else if (searchQuery.length === 2) {
+  // Search by country code (if it's two characters)
+  filteredConfigs = configs.filter(
+    (config) =>
+      config.countryCode &&
+      config.countryCode.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+} else if (searchQuery.length > 2) {
+  // Search by IP, ISP, or country code
+  filteredConfigs = configs.filter(
+    (config) =>
+      (config.ip && config.ip.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (`${config.ip}:${config.port}`.includes(searchQuery.toLowerCase())) ||
+      (config.isp && config.isp.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+}
 
-    const configType = url.searchParams.get('configType') || 'tls';
+const totalFilteredConfigs = filteredConfigs.length;
+const totalPages = Math.ceil(totalFilteredConfigs / configsPerPage);
+const startIndex = (page - 1) * configsPerPage;
+const endIndex = Math.min(startIndex + configsPerPage, totalFilteredConfigs);
+const visibleConfigs = filteredConfigs.slice(startIndex, endIndex);
 
-    const tableRows = visibleConfigs
-      .map((config) => {
-        const uuid = generateUUIDv4();
-        const wildcard = selectedWildcard || hostName;
-        const modifiedHostName = selectedWildcard ? `${selectedWildcard}.${hostName}` : hostName;
-        const url = new URL(request.url);
-       const BASE_URL = `https://${url.hostname}`; 
-       const CHECK_API = `${BASE_URL}/geo-ip?ip=`; 
-        const ipPort = `${config.ip}:${config.port}`;
-        const healthCheckUrl = `${CHECK_API}${ipPort}`;
+const configType = url.searchParams.get("configType") || "tls";
+
+const tableRows = visibleConfigs.map((config) => {
+  const uuid = generateUUIDv4();
+  const wildcard = selectedWildcard || hostName;
+  const modifiedHostName = selectedWildcard
+    ? `${selectedWildcard}.${hostName}`
+    : hostName;
+  const url = new URL(request.url);
+  const BASE_URL = `https://${url.hostname}`;
+  const CHECK_API = `${BASE_URL}/geo-ip?ip=`;
+  const ipPort = `${config.ip}:${config.port}`;
+  const healthCheckUrl = `${CHECK_API}${ipPort}`;
 
         if (configType === 'tls') {
             return `
