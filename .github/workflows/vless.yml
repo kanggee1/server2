@@ -1,4 +1,4 @@
-name: 🌐 Build and Deploy Vless Worker
+name: 🌐 Deploy Vless Worker
 
 on:
   workflow_dispatch:
@@ -8,14 +8,14 @@ on:
         required: true
         type: string
       DOMAIN_NAME:
-        description: "🏠 Name of your domain (not subdomain) at Cloudflare"
+        description: "🏠 Name of your domain Cloudflare"
         required: true
         type: string
         default: gpj.us.kg
 
 jobs:
   build:
-    name: 🚀 Build and Deploy Worker
+    name: 🚀 Deploy Worker
     runs-on: ubuntu-latest
 
     steps:
@@ -43,7 +43,6 @@ jobs:
           echo "✅ Checking Wrangler version..."
           wrangler --version
 
-      # Step 5: Process Variables and Update Configuration
       - name: 🔧 Process Variables and Update Configuration
         run: |
           WORKER_NAME=${{ github.event.inputs.WORKER_NAME }}
