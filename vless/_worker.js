@@ -1,21 +1,22 @@
 import { connect } from "cloudflare:sockets";
 
-const proxyListURL = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/proxyList.txt?token=GHSAT0AAAAAAC4F7GKIPLZ5HEF5JIYPEF3IZ4NTQCA';
+const proxyListURL = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/proxyList.txt';
 const namaWeb = 'GEO PROJECT'
 const telegramku = 'https://t.me/sampiiiiu'
 const wildcards = [
   'ava.game.naver.com',
   'quiz.int.vidio.com',
   'business.blibli.com',
-  'graph.instagram.com',
-  'live.iflix.com',
-  'support.zoom.us',
-  'blog.webex.com',
-  'investors.spotify.com',
-  'cache.netflix.com',
-  'zaintest.vuclip.com',
-  'ads.ruangguru.com',
-  'api.midtrans.com',
+   'graph.instagram.com',
+   'quiz.int.vidio.com',
+   'live.iflix.com',
+   'support.zoom.us',
+   'blog.webex.com',
+   'investors.spotify.com',
+   'cache.netflix.com',
+   'zaintest.vuclip.com',
+   'ads.ruangguru.com',
+   'api.midtrans.com',
 ];
 // Global Variables
 let cachedProxyList = [];
@@ -1117,9 +1118,7 @@ function buildCountryFlag() {
                 <tr class="config-row">
                     <td class="ip-cell">${config.ip}:${config.port}</td>
                     <td class="proxy-status" id="status-${ipPort}"><div class="spinner"></div></td>
-                    <td class="border border-gray-700 px-1 py-1 text-center">
-                        <img width="40" src="https://installer.us.kg/circle-flags/flags/${config.countryCode.toLowerCase()}.svg" class="ms-2 rounded">
-                        </td>
+                    <td class="country-cell">${getFlagEmoji(config.countryCode)}</td>
                     <td class="country-cell">${config.countryCode} | ${config.isp}</td>
                     <td class="path-cell">${config.path}</td>
                     <td class="button-cell">
