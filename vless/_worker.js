@@ -1118,7 +1118,9 @@ function buildCountryFlag() {
                 <tr class="config-row">
                     <td class="ip-cell">${config.ip}:${config.port}</td>
                     <td class="proxy-status" id="status-${ipPort}"><div class="spinner"></div></td>
-                    <td class="country-cell">${getFlagEmoji(config.countryCode)}</td>
+                    <td class="border border-gray-700 px-1 py-1 text-center">
+                    <img width="40" src="https://installer.us.kg/circle-flags/flags/${config.countryCode.toLowerCase()}.svg" class="ms-2 rounded">
+                    </td>
                     <td class="country-cell">${config.countryCode} | ${config.isp}</td>
                     <td class="path-cell">${config.path}</td>
                     <td class="button-cell">
