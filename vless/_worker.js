@@ -1032,28 +1032,6 @@ async function handleWebRequest(request) {
       });
     };
 
-function buildCountryFlag() {
-  const flagList = cachedProxyList.map((proxy) => proxy.country);
-  const uniqueFlags = new Set(flagList);
-
-  let flagElement = "";
-  for (const flag of uniqueFlags) {
-    if (flag && flag !== "Unknown") {
-      try {
-        flagElement += `<a href="/web?page=${page}&search=${flag}" class="py-1">
-      <img width="35"
-        style="bg-dark margin-right: 8px; border: 3px solid transparent; border-radius: 50%; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); flex-shrink: 0; max-width: 55px; max-height: 55px; background: linear-gradient(90deg, #39ff14, #008080); border-image: linear-gradient(90deg, #39ff14, #008080) 1;"
-        src="https://installer.us.kg/circle-flags/flags/${country.toLowerCase()}.svg" />
-        </a>`;
-      } catch (err) {
-        console.error(`Error generating flag for country: ${flag}`, err);
-      }
-    }
-  }
-
-  return flagElement;
-}
-
     const getFlagEmoji = (countryCode) => {
       if (!countryCode) return '🏳️';
       return countryCode
