@@ -33,7 +33,7 @@ jobs:
     # Step 4: Run the Python script to update proxy status
     - name: 🔄 Update Proxy Status
       env:
-        IP_FILE: './cek/output.txt' # Input file containing proxy list
+        IP_FILE: './cek/file.txt'
         API_URL: 'https://check.installer.us.kg/check?ip={ip}:{port}' # Proxy check API URL
       run: |
         python ./cek/update_proxy_status.py
@@ -45,10 +45,10 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
         # Menambahkan file ke staging area
-        if [ -f cek/output.txt ]; then
-          git add cek/output.txt && echo "✅ cek/output.txt berhasil ditambahkan ke staging."
+        if [ -f cek/proxyList.txt ]; then
+          git add cek/proxyList.txt && echo "✅ cek/output.txt berhasil ditambahkan ke staging."
         else
-          echo "⚠️ cek/output.txt tidak ditemukan."
+          echo "⚠️ cek/proxyList.txt tidak ditemukan."
         fi
 
         if [ -f cek/error.txt ]; then
