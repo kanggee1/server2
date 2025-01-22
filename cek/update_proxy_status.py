@@ -29,8 +29,8 @@ def check_proxy(row, api_url_template):
         return (None, None, error_message)
 
 def main():
-    input_file = os.getenv('IP_FILE', 'cek/output.txt')
-    output_file = 'cek/output.txt'
+    input_file = os.getenv('IP_FILE', 'cek/file.txt')
+    output_file = 'cek/proxyList.txt'
     error_file = 'cek/error.txt'
     dead_file = 'cek/dead.txt'
     api_url_template = os.getenv('API_URL', 'https://check.installer.us.kg/check?ip={ip}:{port}')
