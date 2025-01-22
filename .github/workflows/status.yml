@@ -44,13 +44,23 @@ jobs:
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
-        # Add changed files to staging
-        git add ./cek/*.txt || echo "⚠️ No files to add."
-
-        # Commit and push if there are changes
-        if git diff --cached --exit-code; then
-          echo "✅ No changes detected, skipping commit."
+        # Tambahkan file ke staging area
+        if [ -f cek/proxyList.txt ]; then
+          git add cek/proxyList.txt && echo "✅ cek/proxyList.txt berhasil ditambahkan ke staging."
         else
-          git commit -m "🔄 Update proxy IP status" && echo "✅ Changes committed."
-          git push && echo "🚀 Changes pushed to repository."
+          echo "⚠️ cek/proxyList.txt tidak ditemukan."
+        fi
+
+        if [ -f cek/dead.txt ]; then
+          git add cek/dead.txt && echo "✅ cek/dead.txt berhasil ditambahkan ke staging."
+        else
+          echo "⚠️ cek/dead.txt tidak ditemukan."
+        fi
+
+        # Commit hanya jika ada perubahan
+        if git diff --cached --exit-code; then
+          echo "✅ Tidak ada perubahan yang perlu di-commit."
+        else
+          git commit -m "🔄 Update proxy IP status" && echo "✅ Perubahan berhasil di-commit."
+          git push && echo "🚀 Perubahan berhasil di-push ke repository."
         fi
