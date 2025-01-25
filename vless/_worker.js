@@ -1067,7 +1067,7 @@ function buildCountryFlag() {
     const hostName = url.hostname;
     const page = parseInt(url.searchParams.get('page')) || 1;
     const searchQuery = url.searchParams.get('search') || '';
-    const selectedWildcard = url.searchParams.get('wildcard') || null;
+    const selectedWildcard = url.searchParams.get('wildcard') || '';
     const selectedConfigType = url.searchParams.get('configType') || 'tls'; // Ambil nilai 'configType' atau gunakan default 'tls'
     const configsPerPage = 30;
 
