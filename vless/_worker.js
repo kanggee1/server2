@@ -1,11 +1,10 @@
 import { connect } from "cloudflare:sockets";
 
-const proxyListURL = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/cek/proxyList.txt';
+const proxyListURL = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/proxyList.txt';
 const namaWeb = 'GEO PROJECT'
 const telegramku = 'https://t.me/sampiiiiu'
 const wildcards = [
   'ava.game.naver.com',
-  'quiz.int.vidio.com',
   'business.blibli.com',
    'graph.instagram.com',
    'quiz.int.vidio.com',
@@ -382,7 +381,7 @@ export default {
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 GeoVPN | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a></p>
+    <p>&copy; 2025 GeoVPN | <a href="/">Privacy Policy</a> | <a href="/">Terms of Service</a></p>
   </footer>
 </body>
 </html>
@@ -574,6 +573,7 @@ async function handleSubRequest(hostnem) {
                         <option value="nekobox">NEKOBOX</option>
                         <option value="singbox">SINGBOX</option>
                         <option value="surfboard">SURFBOARD</option>
+                        <option value="husi">HUSI</option>
                     </select>
                 </div>
 
