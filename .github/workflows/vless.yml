@@ -61,7 +61,7 @@ jobs:
             --transform-object-keys true \
             --unicode-escape-sequence true
 
-      # Step 6: Deploy to Cloudflare
+      # Step 6: Deploy the Worker
       - name: 🚀 Deploy to Cloudflare
         run: |
           cd vless
