@@ -26,23 +26,29 @@ jobs:
       - name: 🛠️ Install Node.js (LTS)
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '18'  # Pastikan versi ini kompatibel
 
-      # Step 3: Install and Update Wrangler
+      # Step 3: Install Wrangler
       - name: 🔄 Install Wrangler
         run: |
           npm install -g wrangler
 
-      # Step 4: Install Obfuscation Package
+      # Step 4: Install JavaScript Obfuscator
       - name: 🔒 Install JavaScript Obfuscator
         run: |
           npm install -g javascript-obfuscator
 
-      # Step 5: Obfuscate worker.js
+      # Step 5: Obfuscate worker.js (Gunakan opsi yang aman)
       - name: 🛠️ Obfuscating Worker.js
         run: |
-          javascript-obfuscator ./vless/worker.js --output ./vless/worker-obf.js --compact true --control-flow-flattening true --dead-code-injection true --string-array true --string-array-encoding base64 --string-array-threshold 0.75
-          
+          javascript-obfuscator ./vless/worker.js --output ./vless/worker-obf.js \
+          --compact true \
+          --control-flow-flattening false \
+          --dead-code-injection false \
+          --string-array true \
+          --string-array-encoding base64 \
+          --string-array-threshold 0.5
+
           # Replace original file with obfuscated one
           mv ./vless/worker-obf.js ./vless/worker.js
 
