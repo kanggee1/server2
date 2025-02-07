@@ -27,7 +27,8 @@ jobs:
       - name: 🛠️ Install Node.js & Dependencies
         run: |
           npm cache clean --force
-          npm install -g wrangler javascript-obfuscator
+          npm install -g wrangler
+          npm install javascript-obfuscator
 
       # Step 3: Process Configuration
       - name: 🔧 Update Configuration
@@ -40,29 +41,19 @@ jobs:
           echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
           sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
 
-      # Step 4: Obfuscate worker.js (Tingkat Keamanan Maksimum)
+      # Step 4: Obfuscate worker.js (with potential fixes applied)
       - name: 🔒 Obfuscate Worker Script
         run: |
-          javascript-obfuscator ./vless/_worker.js --output ./vless/worker.js \
+          npx javascript-obfuscator ./vless/_worker.js --output ./vless/worker.js \
             --compact true \
             --control-flow-flattening true \
             --control-flow-flattening-threshold 1 \
             --dead-code-injection true \
             --dead-code-injection-threshold 1 \
-            --debug-protection true \
-            --debug-protection-interval true \
-            --disable-console-output true \
             --identifier-names-generator hexadecimal \
             --rename-globals true \
-            --self-defending true \
             --string-array true \
             --string-array-encoding 'rc4' \
-            --string-array-index-shift true \
-            --string-array-rotate true \
-            --string-array-shuffle true \
-            --string-array-wrappers-count 5 \
-            --string-array-wrappers-chained-calls true \
-            --string-array-wrappers-type 'function' \
             --string-array-threshold 1 \
             --transform-object-keys true \
             --unicode-escape-sequence true
