@@ -10,6 +10,7 @@ on:
       DOMAIN_NAME:
         description: "🏠 Domain Name on Cloudflare"
         required: false
+        type: string
         default: gpj.us.kg
 
 jobs:
@@ -26,33 +27,14 @@ jobs:
       - name: 🛠️ Install Node.js (LTS)
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Pastikan versi ini kompatibel
+          node-version: 'lts/*'
 
-      # Step 3: Install Wrangler
-      - name: 🔄 Install Wrangler
+      # Step 3: Install Dependencies
+      - name: 📦 Install Dependencies
         run: |
-          npm install -g wrangler
+          npm install -g wrangler javascript-obfuscator
 
-      # Step 4: Install JavaScript Obfuscator
-      - name: 🔒 Install JavaScript Obfuscator
-        run: |
-          npm install -g javascript-obfuscator
-
-      # Step 5: Obfuscate worker.js (Gunakan opsi yang aman)
-      - name: 🛠️ Obfuscating Worker.js
-        run: |
-          javascript-obfuscator ./vless/worker.js --output ./vless/worker-obf.js \
-          --compact true \
-          --control-flow-flattening false \
-          --dead-code-injection false \
-          --string-array true \
-          --string-array-encoding base64 \
-          --string-array-threshold 0.5
-
-          # Replace original file with obfuscated one
-          mv ./vless/worker-obf.js ./vless/worker.js
-
-      # Step 6: Process Configuration
+      # Step 4: Process Configuration
       - name: 🔧 Update Configuration
         run: |
           WORKER_NAME=${{ github.event.inputs.WORKER_NAME }}
@@ -63,7 +45,23 @@ jobs:
           echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
           sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
 
-      # Step 7: Deploy the Worker
+      # Step 5: Obfuscate worker.js
+      - name: 🔒 Obfuscate Worker Script
+        run: |
+          javascript-obfuscator ./vless/_worker.js --output ./vless/worker.js \
+            --compact true \
+            --control-flow-flattening true \
+            --control-flow-flattening-threshold 0.5 \
+            --dead-code-injection false \
+            --identifier-names-generator mangled \
+            --rename-globals false \
+            --string-array true \
+            --string-array-encoding base64 \
+            --string-array-threshold 0.75 \
+            --transform-object-keys true \
+            --unicode-escape-sequence true
+
+      # Step 6: Deploy the Worker
       - name: 🚀 Deploy to Cloudflare
         run: |
           cd vless
