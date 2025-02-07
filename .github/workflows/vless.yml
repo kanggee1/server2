@@ -23,18 +23,12 @@ jobs:
       - name: 📂 Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Install Node.js
-      - name: 🛠️ Install Node.js (LTS)
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
-
-      # Step 3: Install Dependencies
-      - name: 📦 Install Dependencies
+      # Step 2: Install Node.js & Dependencies
+      - name: 🛠️ Install Node.js & Dependencies
         run: |
           npm install -g wrangler javascript-obfuscator
 
-      # Step 4: Process Configuration
+      # Step 3: Process Configuration
       - name: 🔧 Update Configuration
         run: |
           WORKER_NAME=${{ github.event.inputs.WORKER_NAME }}
@@ -45,23 +39,34 @@ jobs:
           echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
           sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
 
-      # Step 5: Obfuscate worker.js
+      # Step 4: Obfuscate worker.js (Tingkat Keamanan Maksimum)
       - name: 🔒 Obfuscate Worker Script
         run: |
           javascript-obfuscator ./vless/_worker.js --output ./vless/worker.js \
             --compact true \
             --control-flow-flattening true \
-            --control-flow-flattening-threshold 0.5 \
-            --dead-code-injection false \
-            --identifier-names-generator mangled \
-            --rename-globals false \
+            --control-flow-flattening-threshold 1 \
+            --dead-code-injection true \
+            --dead-code-injection-threshold 1 \
+            --debug-protection true \
+            --debug-protection-interval true \
+            --disable-console-output true \
+            --identifier-names-generator hexadecimal \
+            --rename-globals true \
+            --self-defending true \
             --string-array true \
-            --string-array-encoding base64 \
-            --string-array-threshold 0.75 \
+            --string-array-encoding 'rc4' \
+            --string-array-index-shift true \
+            --string-array-rotate true \
+            --string-array-shuffle true \
+            --string-array-wrappers-count 5 \
+            --string-array-wrappers-chained-calls true \
+            --string-array-wrappers-type 'function' \
+            --string-array-threshold 1 \
             --transform-object-keys true \
             --unicode-escape-sequence true
 
-      # Step 6: Deploy the Worker
+      # Step 5: Deploy the Worker
       - name: 🚀 Deploy to Cloudflare
         run: |
           cd vless
