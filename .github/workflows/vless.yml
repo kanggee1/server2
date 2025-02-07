@@ -26,6 +26,7 @@ jobs:
       # Step 2: Install Node.js & Dependencies
       - name: 🛠️ Install Node.js & Dependencies
         run: |
+          npm cache clean --force
           npm install -g wrangler javascript-obfuscator
 
       # Step 3: Process Configuration
