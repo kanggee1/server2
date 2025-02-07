@@ -23,14 +23,18 @@ jobs:
       - name: 📂 Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Install Node.js & Dependencies
-      - name: 🛠️ Install Node.js & Dependencies
-        run: |
-          npm cache clean --force
-          npm install -g wrangler
-          npm install javascript-obfuscator
+      # Step 2: Install Node.js
+      - name: 🛠️ Install Node.js (LTS)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
 
-      # Step 3: Process Configuration
+      # Step 3: Install Dependencies
+      - name: 📦 Install Dependencies
+        run: |
+          npm install -g wrangler javascript-obfuscator
+
+      # Step 4: Process Configuration
       - name: 🔧 Update Configuration
         run: |
           WORKER_NAME=${{ github.event.inputs.WORKER_NAME }}
@@ -41,24 +45,23 @@ jobs:
           echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
           sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
 
-      # Step 4: Obfuscate worker.js (with potential fixes applied)
+      # Step 5: Obfuscate worker.js
       - name: 🔒 Obfuscate Worker Script
         run: |
-          npx javascript-obfuscator ./vless/_worker.js --output ./vless/worker.js \
+          javascript-obfuscator ./vless/_worker.js --output ./vless/worker.js \
             --compact true \
             --control-flow-flattening true \
-            --control-flow-flattening-threshold 1 \
-            --dead-code-injection true \
-            --dead-code-injection-threshold 1 \
-            --identifier-names-generator hexadecimal \
-            --rename-globals true \
+            --control-flow-flattening-threshold 0.5 \
+            --dead-code-injection false \
+            --identifier-names-generator mangled \
+            --rename-globals false \
             --string-array true \
-            --string-array-encoding 'rc4' \
-            --string-array-threshold 1 \
+            --string-array-encoding base64 \
+            --string-array-threshold 0.75 \
             --transform-object-keys true \
             --unicode-escape-sequence true
 
-      # Step 5: Deploy the Worker
+      # Step 6: Deploy to Cloudflare
       - name: 🚀 Deploy to Cloudflare
         run: |
           cd vless
