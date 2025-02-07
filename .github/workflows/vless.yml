@@ -1,0 +1,67 @@
+name: 🌐 Deploy Vless Worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      WORKER_NAME:
+        description: "🌟 Name of your worker"
+        required: true
+        type: string
+      DOMAIN_NAME:
+        description: "🏠 Domain Name on Cloudflare"
+        required: false
+        default: gpj.us.kg
+
+jobs:
+  deploy:
+    name: 🚀 Deploy Cloudflare Worker
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: 📂 Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node.js
+      - name: 🛠️ Install Node.js (LTS)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      # Step 3: Install and Update Wrangler
+      - name: 🔄 Install Wrangler
+        run: |
+          npm install -g wrangler
+
+      # Step 4: Install Obfuscation Package
+      - name: 🔒 Install JavaScript Obfuscator
+        run: |
+          npm install -g javascript-obfuscator
+
+      # Step 5: Obfuscate worker.js
+      - name: 🛠️ Obfuscating Worker.js
+        run: |
+          javascript-obfuscator ./vless/worker.js --output ./vless/worker-obf.js --compact true --control-flow-flattening true --dead-code-injection true --string-array true --string-array-encoding base64 --string-array-threshold 0.75
+          
+          # Replace original file with obfuscated one
+          mv ./vless/worker-obf.js ./vless/worker.js
+
+      # Step 6: Process Configuration
+      - name: 🔧 Update Configuration
+        run: |
+          WORKER_NAME=${{ github.event.inputs.WORKER_NAME }}
+          DOMAIN_NAME=${{ github.event.inputs.DOMAIN_NAME }}
+
+          echo "Updating WORKER_NAME to ${WORKER_NAME}"
+          sed -i "s/%worker_name%/${WORKER_NAME}/g" ./vless/wrangler.toml
+          echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
+          sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
+
+      # Step 7: Deploy the Worker
+      - name: 🚀 Deploy to Cloudflare
+        run: |
+          cd vless
+          wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
