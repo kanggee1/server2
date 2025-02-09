@@ -12,6 +12,8 @@ on:
         required: false
         type: string
         default: gpj.us.kg
+  push:
+    branches: [main]
 
 jobs:
   deploy:
@@ -23,16 +25,15 @@ jobs:
       - name: 📂 Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Install Node.js
+      # Step 2: Install Node.js (LTS)
       - name: 🛠️ Install Node.js (LTS)
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
 
-      # Step 3: Install Dependencies
-      - name: 📦 Install Dependencies
-        run: |
-          npm install -g wrangler javascript-obfuscator
+      # Step 3: Install and Update Wrangler
+      - name: 🔄 Install Wrangler
+        run: npm install -g wrangler
 
       # Step 4: Process Configuration
       - name: 🔧 Update Configuration
@@ -45,23 +46,33 @@ jobs:
           echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
           sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
 
-      # Step 5: Obfuscate worker.js
-      - name: 🔒 Obfuscate Worker Script
+      # Step 5: Obfuscate code
+      - name: 🔒 Obfuscate code
         run: |
-          javascript-obfuscator ./vless/_worker.js --output ./vless/worker.js \
-            --compact true \
-            --control-flow-flattening true \
-            --control-flow-flattening-threshold 0.5 \
-            --dead-code-injection false \
-            --identifier-names-generator mangled \
-            --rename-globals false \
-            --string-array true \
-            --string-array-encoding base64 \
-            --string-array-threshold 0.75 \
-            --transform-object-keys true \
-            --unicode-escape-sequence true
+          npm install -g javascript-obfuscator
+          javascript-obfuscator index.js --output _worker.js \
+          --compact true \
+          --control-flow-flattening true \
+          --control-flow-flattening-threshold 1 \
+          --dead-code-injection true \
+          --dead-code-injection-threshold 1 \
+          --identifier-names-generator hexadecimal \
+          --rename-globals true \
+          --string-array true \
+          --string-array-encoding 'rc4' \
+          --string-array-threshold 1 \
+          --transform-object-keys true \
+          --unicode-escape-sequence true
 
-      # Step 6: Deploy the Worker
+      # Step 6: Commit changes after obfuscation
+      - name: 📝 Commit obfuscated changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add _worker.js
+          git commit -m "Obfuscate _worker.js" || echo "No changes to commit"
+
+      # Step 7: Deploy the Worker
       - name: 🚀 Deploy to Cloudflare
         run: |
           cd vless
@@ -69,3 +80,44 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  obfuscate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: npm install -g javascript-obfuscator
+
+      - name: Obfuscate code
+        run: |
+          javascript-obfuscator index.js --output _worker.js \
+          --compact true \
+          --control-flow-flattening true \
+          --control-flow-flattening-threshold 1 \
+          --dead-code-injection true \
+          --dead-code-injection-threshold 1 \
+          --identifier-names-generator hexadecimal \
+          --rename-globals true \
+          --string-array true \
+          --string-array-encoding 'rc4' \
+          --string-array-threshold 1 \
+          --transform-object-keys true \
+          --unicode-escape-sequence true
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add _worker.js
+          git commit -m "Obfuscate _worker.js" || echo "No changes to commit"
