@@ -12,8 +12,6 @@ on:
         required: false
         type: string
         default: gpj.us.kg
-  push:
-    branches: [main]
 
 jobs:
   deploy:
@@ -25,15 +23,16 @@ jobs:
       - name: 📂 Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Install Node.js (v16.x)
-      - name: 🛠️ Install Node.js (v16.x)
+      # Step 2: Install Node.js
+      - name: 🛠️ Install Node.js (LTS)
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: 'lts/*'
 
       # Step 3: Install and Update Wrangler
       - name: 🔄 Install Wrangler
-        run: npm install -g wrangler
+        run: |
+          npm install -g wrangler
 
       # Step 4: Process Configuration
       - name: 🔧 Update Configuration
@@ -46,17 +45,7 @@ jobs:
           echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
           sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
 
-      # Step 5: Check if _worker.js exists in vless folder
-      - name: Check if _worker.js exists
-        run: |
-          ls -l ./vless/_worker.js || echo "_worker.js not found in ./vless"
-
-      # Step 6: Install dependencies locally
-      - name: Install dependencies locally
-        run: |
-          npm install javascript-obfuscator
-
-      # Step 7: Obfuscate the Worker code
+      # Step 5: Obfuscate the Worker code
       - name: 🔒 Obfuscate code
         run: |
           npx javascript-obfuscator ./vless/_worker.js --output ./vless/_worker_obfuscated.js \
@@ -71,21 +60,24 @@ jobs:
           --string-array-encoding 'rc4' \
           --string-array-threshold 1 \
           --transform-object-keys true \
-          --unicode-escape-sequence true || echo "Obfuscation failed"
+          --unicode-escape-sequence true
 
-      # Step 8: Commit Obfuscated Changes
-      - name: Commit obfuscated changes
+          # Debug: Check if obfuscated file exists
+          ls -l ./vless/_worker_obfuscated.js || echo "_worker_obfuscated.js not found"
+
+      # Step 6: Commit the obfuscated file
+      - name: Commit obfuscated code
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add ./vless/_worker_obfuscated.js
-          git commit -m "Obfuscate _worker.js" || echo "No changes to commit"
+          git commit -m "Obfuscated _worker.js to _worker_obfuscated.js" || echo "No changes to commit"
 
-      # Step 9: Deploy the Worker with Dynamic Name
+      # Step 7: Deploy to Cloudflare
       - name: 🚀 Deploy to Cloudflare
         run: |
           cd vless
-          wrangler publish --name ${{ github.event.inputs.WORKER_NAME }}
+          wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
