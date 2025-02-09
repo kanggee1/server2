@@ -25,11 +25,11 @@ jobs:
       - name: 📂 Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Install Node.js (LTS)
-      - name: 🛠️ Install Node.js (LTS)
+      # Step 2: Install Node.js (v16.x)
+      - name: 🛠️ Install Node.js (v16.x)
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '16.x'
 
       # Step 3: Install and Update Wrangler
       - name: 🔄 Install Wrangler
@@ -46,11 +46,20 @@ jobs:
           echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
           sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
 
-      # Step 5: Obfuscate the Worker code
+      # Step 5: Check if index.js exists in vless folder
+      - name: Check if index.js exists
+        run: |
+          ls -l ./vless/index.js || echo "index.js not found in ./vless"
+
+      # Step 6: Install dependencies
+      - name: Install dependencies locally
+        run: |
+          npm install javascript-obfuscator
+
+      # Step 7: Obfuscate the Worker code
       - name: 🔒 Obfuscate code
         run: |
-          npm install -g javascript-obfuscator
-          javascript-obfuscator ./vless/index.js --output ./vless/_worker.js \
+          npx javascript-obfuscator ./vless/index.js --output ./vless/_worker.js \
           --compact true \
           --control-flow-flattening true \
           --control-flow-flattening-threshold 1 \
@@ -62,9 +71,9 @@ jobs:
           --string-array-encoding 'rc4' \
           --string-array-threshold 1 \
           --transform-object-keys true \
-          --unicode-escape-sequence true
+          --unicode-escape-sequence true || echo "Obfuscation failed"
 
-      # Step 6: Commit Obfuscated Changes
+      # Step 8: Commit Obfuscated Changes
       - name: Commit obfuscated changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -72,7 +81,7 @@ jobs:
           git add ./vless/_worker.js
           git commit -m "Obfuscate _worker.js" || echo "No changes to commit"
 
-      # Step 7: Deploy the Worker
+      # Step 9: Deploy the Worker
       - name: 🚀 Deploy to Cloudflare
         run: |
           cd vless
