@@ -204,7 +204,7 @@ export default {
         case "/":
           // Konten untuk root dengan pengalihan otomatis ke /web setelah 3 detik
           return new Response(
-            `<!DOCTYPE html>
+            `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -212,178 +212,612 @@ export default {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>GeoVPN - Your Ultimate VPN Solution</title>
-  <style>
-    /* Reset dan Gaya Dasar */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Arial', sans-serif;
-      line-height: 1.6;
-      background: linear-gradient(to bottom, #e3f2fd, #ffffff);
-      color: #333;
-      overflow-x: hidden;
-    }
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <noscript>
+      <style amp-boilerplate>
+        body {
+          -webkit-animation: none;
+          -moz-animation: none;
+          -ms-animation: none;
+          animation: none;
+        }
+      </style>
+    </noscript>
+    <style amp-custom>
+      * {
+        box-sizing: border-box;
+      }
 
-    /* Header */
-    header {
-      background: linear-gradient(to right, #0077b6, #00b4d8);
-      color: white;
-      text-align: center;
-      padding: 80px 20px;
-      clip-path: ellipse(100% 75% at 50% 25%);
-      position: relative;
-    }
-    header h1 {
-      font-size: 3.8em;
-      margin-bottom: 10px;
-      color: #ffdd00;
-      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      animation: slideDown 1s ease-out;
-    }
-    header p {
-      font-size: 1.4em;
-      opacity: 0.9;
-    }
-    @keyframes slideDown {
-      from {
-        transform: translateY(-50px);
+      body {
+        background-color: #000;
+        color: #fff;
+        font-family: rubik, sans-serif;
+      }
+
+      header {
+        background-color: #000;
+        box-shadow: 0 0 9px 2px hsl(0deg 0% 4% / 48%);
+      }
+
+      header .header-wrapper {
+        margin: 0 auto;
+        max-width: 960px;
+      }
+
+      header .header-wrapper .logo {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 5px 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        color: #75ccff;
+      }
+
+      nav {
+        background-color: #222;
+        border-bottom: 5px solid #C11B17;
+      }
+
+      nav .menu {
+        position: relative;
+      }
+
+      nav .menu ul {
+        list-style-type: none;
+        position: relative;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav .menu ul li {
+        color: #fff;
+        display: inline-block;
+      }
+
+      nav .menu ul li a {
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 15px;
+        display: inline-block;
+      }
+
+      .active {
+        background: -webkit-linear-gradient(top, #353535 0%, #333333 100%);
+      }
+
+      .container {
+        margin: 0 auto;
+        max-width: 960px;
+      }
+
+      .content {
+        margin: 5px 0;
+        padding: 5px;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .title {
+        background-color: #222;
+        padding: 15px;
+        font-size: 17px;
+      }
+
+      .thumbs {
+        position: relative;
+        padding-top: 5px;
+      }
+
+      .btn-body {
+        margin: 15px 0;
+        position: relative;
+        display: flex;
+      }
+
+      .btn-body .btn-items {
+        margin: 0 5px;
+        width: 100%;
+      }
+
+      .btn-body .btn-items a {
+        text-decoration: none;
+        width: 100%;
+        padding: 10px 5px;
+        color: #fff;
+        background: -webkit-linear-gradient(top, hsl(0, 0%, 33%) 0%, #1a1a1a 100%);
+        border-radius: 5px;
+        display: inline-block;
+        text-align: center;overflow: hidden;position: relative;
+      }.btn-body .btn-items a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;width: 100%;
+        height: 100%;
+        background-color: #ad8585;
         opacity: 0;
+        -webkit-transition: 0.2s opacity ease-in-out;
+        transition: 0.2s opacity ease-in-out;
       }
-      to {
-        transform: translateY(0);
-        opacity: 1;
+
+      .btn-items a span {
+        position: absolute;
       }
+
+      .btn-items a span:nth-child(1) {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: -webkit-gradient(linear, left bottom, left top, from(rgba(43, 8, 8, 0)), to(#0f0));
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        -webkit-animation: 2s animateTop linear -1s infinite;
+        animation: 2s animateTop linear -1s infinite;
+      }
+
+      .btn-items a span:nth-child(2) {
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 2px;
+        background: -webkit-gradient(linear, left bottom, left top, from(rgba(43, 8, 8, 0)), to(#0f0));
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        -webkit-animation: 2s animateRight linear -1s infinite;
+        animation: 2s animateRight linear -1s infinite;
+      }
+
+      .btn-items a span:nth-child(3) {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: -webkit-gradient(linear, left top, right top, from(rgba(43, 8, 8, 0)), to(#0f0));
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        -webkit-animation: 2s animateBottom linear infinite;
+        animation: 2s animateBottom linear infinite;
+      }
+
+      .btn-items a span:nth-child(4) {
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 2px;
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(43, 8, 8, 0)), to(#0f0));
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        -webkit-animation: 2s animateLeft linear -1s infinite;
+        animation: 2s animateLeft linear -1 infinite;
+      }
+
+      .box-games-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .box-games-wrapper .box-games {
+        width: 150px;
+        margin: 15px 5px;
+      }
+
+      .box-games-wrapper .box-games .games-img {
+        position: relative;
+        overflow: hidden;
+        padding: 7px;
+      }
+
+      .box-games-wrapper .box-games .games-name {
+        font-size: 12px;
+        background-color: #222;
+        padding: 10px 5px;
+        text-align: center;
+        font-weight: 500;
+      }
+
+      .box-text {
+        padding: 5px;
+      }
+
+      .box-text a {
+        text-decoration: none;
+        color: hsl(214, 100%, 67%);
+      }
+
+      .content table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .box-text table {
+        width: 100%;
+        text-align: center;
+        border-collapse: separate;
+        border: 1px solid #fff;
+      }
+
+      .content table th,
+      .content table td {
+        padding: 8px;
+        border: 1px solid #41e718;
+      }
+
+      .content table th {
+        background: #41e718 linear-gradient(180deg, #000000, #C11B17) repeat-x;
+        text-shadow: 0 1px 3px rgb(0 0 0 / 75%);
+      }
+
+      .content table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .box-text table th,
+      td {
+        border: 1px solid #fff;
+        padding: 5px;
+      }
+
+      .mt-50 {
+        margin-top: 50px;
+      }
+
+      footer {
+        padding: 15px 5px;
+      }
+
+      .copyleft {
+    text-decoration:none;
+    color:#fff;
+    margin:50px 0;
+    }
+    .copyleft a {
+    color:#FFFF00;
+    }
+    .acenter {
+    text-align:center
+    }
+    .pb-2 {
+    padding-bottom:.2rem
     }
 
-    /* Call to Action */
-    .cta {
-      text-align: center;
-      margin: 40px 0;
-      animation: fadeIn 1.5s ease-in-out;
-    }
-    .cta-button {
-      background: #ff5733;
-      color: white;
-      padding: 15px 40px;
-      font-size: 1.3em;
-      border: none;
-      border-radius: 30px;
-      text-decoration: none;
-      display: inline-block;
-      transition: all 0.3s ease;
-      margin: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    .cta-button:hover {
-      background: #c70039;
-      transform: scale(1.1);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
+    .fixed-footer {
+    display:flex;
+    justify-content:space-around;
+    position:fixed;
+    background:radial-gradient(circle 214px at 49.5% 54.2%,#201a1a 0,#C11B17 96%);
+    padding:5px 0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:99
+  }
+  .fixed-footer a {
+    flex-basis:calc((100% - 15px*6)/ 5);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#080202;
+    max-width:75px;
+    font-size:12px
+  }
+  .fixed-footer .center {
+    transform:scale(1.5) translateY(-5px);
+    background:center no-repeat;
+    background-size:contain;
+    background-color:inherit;
+    border-radius:50%
+  }
+  .fixed-footer amp-img {
+    max-width:30%;
+    margin-bottom:5px
+  }
 
-    /* Features Section */
-    .features {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 30px;
-      padding: 40px 10px;
+  .tada {
+    -webkit-animation-name:tada;
+    animation-name:tada;
+    -webkit-animation-duration:1s;
+    animation-duration:1s;
+    -webkit-animation-fill-mode:both;
+    animation-fill-mode:both;
+    animation-iteration-count:infinite
+  }
+  @-webkit-keyframes tada {
+    0% {
+      -webkit-transform:scale3d(1,1,1);
+      transform:scale3d(1,1,1)
     }
-    .feature {
-      background: white;
-      border-radius: 15px;
-      padding: 25px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      flex: 1;
-      max-width: 300px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    10%,20% {
+      -webkit-transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg);
+      transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg)
     }
-    .feature:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    30%,50%,70%,90% {
+      -webkit-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg);
+      transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg)
     }
-    .feature h3 {
-      color: #0077b6;
-      margin-bottom: 15px;
+    40%,60%,80% {
+      -webkit-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg);
+      transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg)
     }
-    .feature p {
-      font-size: 1em;
-      color: #666;
+    100% {
+      -webkit-transform:scale3d(1,1,1);
+      transform:scale3d(1,1,1)
     }
-    .feature-icon {
-      font-size: 3em;
-      color: #0077b6;
-      margin-bottom: 15px;
+  }
+  @keyframes tada {
+    0% {
+      -webkit-transform:scale3d(1,1,1);
+      transform:scale3d(1,1,1)
     }
+    10%,20% {
+      -webkit-transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg);
+      transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg)
+    }
+    30%,50%,70%,90% {
+      -webkit-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg);
+      transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg)
+    }
+    40%,60%,80% {
+      -webkit-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg);
+      transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg)
+    }
+    100% {
+      -webkit-transform:scale3d(1,1,1);
+      transform:scale3d(1,1,1)
+    }
+  }
 
-    /* Footer */
-    footer {
-      background: linear-gradient(to right, #0077b6, #00b4d8);
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-      font-size: 0.9em;
-      clip-path: ellipse(100% 75% at 50% 25%);
-    }
-    footer a {
-      color: #ffdd00;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    footer a:hover {
-      color: #ff5733;
-    }
-  </style>
+      @keyframes beat {
+        to {
+          transform: scale(1.2);
+        }
+      }
+
+      @keyframes animateTop {
+        0% {
+          -webkit-transform: translateX(100%);
+          transform: translateX(100%);
+        }
+
+        100% {
+          -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+        }
+      }
+
+      @keyframes animateRight {
+        0% {
+          -webkit-transform: translateY(100%);
+          transform: translateY(100%);
+        }
+
+        100% {
+          -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+        }
+      }
+
+      @keyframes animateLeft {
+        0% {
+          -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+        }
+
+        100% {
+          -webkit-transform: translateY(100%);
+          transform: translateY(100%);
+        }
+      }
+
+      @keyframes animateBottom {
+        0% {
+          -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+        }
+
+        100% {
+          -webkit-transform: translateX(100%);
+          transform: translateX(100%);
+        }
+      }
+
+      @media only screen and (max-width: 720px) {
+        .box-games-wrapper {
+          justify-content: center;
+        }
+
+        .box-games-wrapper .box-games {
+          width: 45%;
+        }
+
+        nav .menu ul li {
+          display: block;
+          text-align: center;
+        }
+
+        nav .menu ul li a {
+          width: 100%;
+        }
+    </style>
+    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+  </head>
+  
+  <script>
+    setTimeout(() => {
+      window.location.href = "/web";
+    }, 7000);
+  </script>
 </head>
-<body>
-  <!-- Header -->
-  <header>
-    <h1>GeoVPN</h1>
-    <p>Your Ultimate VPN Solution for Secure and Fast Internet</p>
-  </header>
+  <body>
+    <header>
+      <div class="header-wrapper">
+        <div class="logo">
+        </div>
+      </div>
+    </header>
+    <nav role="navigation">
+      <div class="container">
+        <div class="menu">
+          <ul>
+            <li>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section class="content">
+      <div class="container">
+        <div class="thumbs">
+          <amp-img src="https://www.nimbusddos.com/img/animations/cloud-based-ddos-simulation-platform.gif" width="200" height="90" alt="XCDDOS VPS MURAH" layout="responsive"></amp-img>
+        </div>
+        <nav role="navigation">
+      <div class="container">
+        <div class="menu">
+          <ul>
+            <li>
+<div class="btn-body">
+                                              <div class="btn-items">
+              </a>
+                        <a href="https://t.me/testikuy_mang" class="active">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+                 <b>     🔈LIST VPS PREMIUM INTEL CPUs⚡</b>
+                              </a>
+              <a href="https://t.me/testikuy_mang" class="active">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+                 <b>     🔈LIST VPS PREMIUM AMD CPUs⚡</b>
+                              </a>
+                        <a href="https://t.me/testikuy_mang" class="active">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+                 <b>     🔈LIST VPS REGULAR CPUs⚡</b>
+                              </a>
+                                                        </div>
+                                                      </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+        <div class="btn-body">
+          <div class="btn-items">
+            <a href="https://t.me/testikuy_mang" rel="nofollow noreferrer" target="_blank" title="CLICK TO ORDER VPS">
+              <b>512 MB / 1 CPU
+10 GB SSD Disk
+500 GB transfer <br>🛒<br> Rp.15k/1$</b>
+            </a>
+            <a href="https://t.me/testikuy_mang" rel="nofollow noreferrer" target="_blank" title="CLICK TO ORDER VPS">
+              <b>1 GB / 1 CPU
+25 GB SSD Disk
+1000 GB transfer <br>🛒<br> Rp.25k/2$</b>
+            </a>
+                        <a href="https://t.me/testikuy_mang" rel="nofollow noreferrer" target="_blank" title="CLICK TO ORDER VPS">
+              <b>2 GB / 1 CPU
+50 GB SSD Disk
+2 TB transfer <br>🛒<br> Rp.45k/3$</b>
+            </a>
+                        <a href="https://t.me/testikuy_mang" rel="nofollow noreferrer" target="_blank" title="CLICK TO ORDER VPS">
+              <b>2 GB / 2 CPUs
+60 GB SSD Disk
+3 TB transfer
 
-  <!-- Call to Action -->
-  <div class="cta">
-    <a href="/web" class="cta-button">Go to Web</a>
-    <a href="/vpn" class="cta-button">Generate Sub Links</a>
-  </div>
+ <br>🛒<br> Rp.60k/4$</b>
+            </a>
+          <a href="https://t.me/testikuy_mang" rel="nofollow noreferrer" target="_blank" title="CLICK TO ORDER VPS">
+              <b>4 GB / 2 CPUs
+80 GB SSD Disk
+4 TB transfer <br>🛒<br> Rp.70k/5$</b>
+            </a>
+            <a href="https://t.me/testikuy_mang" rel="nofollow noreferrer" target="_blank" title="CLICK TO ORDER VPS">
+              <b>8 GB / 4 CPUs
+160 GB SSD Disk
+5 TB transfer <br>🛒<br> Rp.70k/9$</b>
+            </a>
+            <a href="https://t.me/testikuy_mang" rel="nofollow noreferrer" target="_blank" title="CLICK TO ORDER VPS">
+              <b>16 GB / 8 CPUs
+320 GB SSD Disk
+6 TB transfer <br>🛒<br> Rp.200k/16$</b>
+            </a>
+          </div>
+        </div>
+        <section class="content">
+          <table>
+            <tbody>
+              <tr>
+                <th colspan="2">INFO SITUS VPS BERKUALITAS TERPERCAYA</th>
+              </tr>
+              <tr>
+                <td>Proof Transaction / Bukti Trx</td>
+                <td><a href="https://t.me/testikuy_mang">Click Here To Check</a> 🔥</td>
+              </tr>
+              <tr>
+                <td>Payment</td>
+                <td>📱QRIS, ⭐Paypal</td>
+              </tr>
+              <tr>
+                <td>Mata Uang</td>
+                <td>IDR (Indonesia Rupiah) && ALL PAYMENT</td>
+              </tr>
+              <tr>
+                <td>Jam Operasional</td>
+                <td>24 Jam Online</td>
+              </tr>
+              <tr>
+                <td>Card Pembelian</td>
+                <td>Full Garansi 30 Days 3x Replace</td>
+              </tr>
+              <tr>
+                <td>Rating</td>
+                <td>⭐⭐⭐⭐⭐⭐</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <style>
+        .contact-icons {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+        }
 
-  <!-- Features Section -->
-  <div class="features">
-    <div class="feature">
-      <div class="feature-icon">🔒</div>
-      <h3>Secure</h3>
-      <p>Protect your data and privacy with top-tier encryption.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">⚡</div>
-      <h3>Fast</h3>
-      <p>Enjoy high-speed connections with optimized servers.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">✔️</div>
-      <h3>Reliable</h3>
-      <p>24/7 uptime with guaranteed performance and support.</p>
-    </div>
-  </div>
+        .contact-icons a {
+            margin-right: 10px;
+        }
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 GeoVPN | <a href="/">Privacy Policy</a> | <a href="/">Terms of Service</a></p>
-  </footer>
-</body>
+        .contact-icons img {
+            width: 40px;
+            height: auto;
+        }
+    </style>
+    <div class="contact-icons">
+        <a href="https://t.me/sampiiiiu" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Telegram_2019_Logo.svg" alt="Telegram Icon">
+        </a>
+    </div>
+    <article>
+      <div class="container">
+        <div class="box-text">
+        <footer>
+        <div class="container">
+                        <div class="copyleft acenter pb-2">
+                            <span>Copyright &copy; 2015 - 2070 • <a href="https://t.me/sampiiiiu">GEO PROJECT CORPORATION</a> •</span>
+                        </div>
+    </article>
+  </body>
 </html>
 
 `,
@@ -424,145 +858,219 @@ async function handleSubRequest(hostnem) {
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --color-primary: #00ff88;
-            --color-secondary: #00ffff;
-            --color-background: #0a0f1a;
-            --color-card: rgba(15, 22, 36, 0.95);
-            --color-text: #e0f4f4;
-            --transition: all 0.3s ease;
-        }
+    --color-primary: #00ff88;
+    --color-secondary: #00ffff;
+    --color-background: #0a0f1a;
+    --color-card: rgba(0, 0, 0, 0); /* Kartu sepenuhnya transparan */
+    --color-text: #e0f4f4;
+    --transition: all 0.3s ease;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            outline: none;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--color-background);
-            color: var(--color-text);
-            line-height: 1.6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+body {
+    font-family: 'Inter', sans-serif;
+    background: url('https://telegra.ph/file/0b9a4c97f231c8bc33aa9.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--color-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            padding: 2rem;
-        }
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+}
 
-        .card {
-            background: var(--color-card);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            transition: var(--transition);
-        }
+.card {
+    background: var(--color-card);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+    backdrop-filter: blur(15px); /* Efek blur latar belakang */
+    border: 1px solid rgba(0, 255, 136, 0.2); /* Border transparan */
+    transition: var(--transition);
+    -webkit-backdrop-filter: blur(15px); /* Untuk Safari */
+    background-color: rgba(0, 0, 0, 0); /* Menghapus latar belakang solid */
+}
 
-        .title {
-            text-align: center;
-            color: var(--color-primary);
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            font-weight: 700;
-        }
+.card:hover {
+    transform: scale(1.02);
+}
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+.title {
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--color-text);
-            font-weight: 500;
-        }
+.form-group {
+    margin-bottom: 1rem;
+}
 
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: rgba(0, 255, 136, 0.05);
-            border: 2px solid rgba(0, 255, 136, 0.3);
-            border-radius: 8px;
-            color: var(--color-text);
-            transition: var(--transition);
-        }
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+    font-weight: 500;
+}
 
-        .form-control:focus {
-            border-color: var(--color-secondary);
-            box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.2);
-        }
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    color: var(--color-text);
+    transition: var(--transition);
+}
 
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--color-primary);
-            color: var(--color-background);
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
+.form-control:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
 
-        .btn:hover {
-            background: var(--color-secondary);
-        }
+.btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--color-primary);
+    color: var(--color-background);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
 
-        .result {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(0, 255, 136, 0.1);
-            border-radius: 8px;
-            word-break: break-all;
-        }
+.btn:hover {
+    background: var(--color-secondary);
+}
 
-        .loading {
-            display: none;
-            text-align: center;
-            color: var(--color-primary);
-            margin-top: 1rem;
-        }
+.result {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 255, 136, 0.1);
+    border-radius: 8px;
+    word-break: break-all;
+}
 
-        .copy-btns {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-        }
+.loading {
+    display: none;
+    text-align: center;
+    color: var(--color-primary);
+    margin-top: 1rem;
+}
 
-        .copy-btn {
-            background: rgba(0, 255, 136, 0.2);
-            color: var(--color-primary);
-            padding: 0.5rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
+.copy-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}
 
-        .copy-btn:hover {
-            background: rgba(0, 255, 136, 0.3);
-        }
+.copy-btn {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--color-primary);
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+}
 
-        #error-message {
-            color: #ff4444;
-            text-align: center;
-            margin-top: 1rem;
-        }
+.copy-btn:hover {
+    background: rgba(0, 255, 136, 0.3);
+}
+
+#error-message {
+    color: #ff4444;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.watermark {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1rem;
+        color: #00FFFF;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        font-weight: bold;
+        text-align: center;
+      }
+    
+    .watermark a {
+        color: #00FFFF;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    
+      .watermark a:hover {
+        color: #00FFFF;
+      }
+    
+      @media (max-width: 768px) {
+        .header h1 { font-size: 32px; }
+        .config-section h3 { font-size: 24px; }
+        .config-block h4 { font-size: 20px; }
+      }
+      
+      .watermark-container {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  font-weight: bold;
+  z-index: 9999;
+  color: #ff0000;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 5px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.watermark-container a {
+  color: #ff0000;
+  text-decoration: none;
+}
+
+.watermark-container a:hover {
+  text-decoration: underline;
+}
+
+.separator {
+  margin: 0 10px; /* Jarak antara teks */
+}
+
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">
-            <h1 class="title">Geo Project</h1>
+    <div class="card">
+        <h1 class="title">Geo Project</h1>
+       <center>
+    <button id="home-button" 
+        class="px-3 py-1 text-sm font-semibold text-white border border-[#39ff14] rounded-md backdrop-blur-md bg-white/10 hover:bg-white/20 hover:text-black transition duration-300 ease-in-out"
+        style="margin-top: 0.4rem;" 
+        onclick="window.location.href='/web';">
+        Back Home
+    </button>
+</center>
+<br>
             <form id="subLinkForm">
                 <div class="form-group">
                     <label for="app">Aplikasi</label>
@@ -848,7 +1356,6 @@ async function handleSubRequest(hostnem) {
     <option value="ZW">Zimbabwe</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="limit">Jumlah Config</label>
                     <input type="number" id="limit" class="form-control" min="1" max="50" placeholder="Maks 50" required>
@@ -863,12 +1370,17 @@ async function handleSubRequest(hostnem) {
             <div id="result" class="result" style="display: none;">
                 <p id="generated-link"></p>
                 <div class="copy-btns">
-                    <button id="copyLink" class="copy-btn">Copy Link</button>
-                    <button id="openLink" class="copy-btn">Buka Link</button>
+                    <button id="copyLink" class="copy-btn">Copy</button>
+                    <button id="openLink" class="copy-btn">Open</button>
                 </div>
             </div>
         </div>
     </div>
+<div class="watermark-container">
+  <a href="https://t.me/VLTRSSbot" target="_blank">VPNBot</a>
+  <span class="separator">-</span>
+  <a href="https://t.me/sampiiiiu" target="_blank">GeoVPN</a>
+</div>
 
     <script>
         // Performance optimization: Use event delegation and minimize DOM queries
@@ -1117,7 +1629,7 @@ function buildCountryFlag() {
             return `
                 <tr class="config-row">
                     <td class="ip-cell">${config.ip}:${config.port}</td>
-                    <td class="proxy-status" id="status-${ipPort}"><div class="spinner"></div></td>
+                    <td class="proxy-status" id="status-${ipPort}"><strong><i class="fas fa-spinner fa-spin loading-icon"></i></strong><div class="rainbow-text">Loading...</div></td>
                     <td class="border border-gray-700 px-1 py-1 text-center">
                         <img width="40" src="https://installer.us.kg/circle-flags/flags/${config.countryCode.toLowerCase()}.svg" class="ms-2 rounded">
                         </td>
@@ -1148,35 +1660,45 @@ function buildCountryFlag() {
               const spinner = document.getElementById('ping-' + data.proxy + ':' + data.port);
 
       // Ambil data status dan delay
-      const status = data.status || 'UNKNOWN';
-      const delay = data.delay || 'N/A';
+            const status = data.status || 'UNKNOWN';
+            let delay = parseFloat(data.delay) || 'N/A';
 
-              if (status === 'ACTIVE') {
-    statusElement.innerHTML = 'ACTIVE<br><span style="color: gold;">(' + delay + ')</span>'; // Pisahkan ACTIVE dan delay
-    statusElement.style.color = '#00FF00'; 
-    statusElement.style.fontSize = '13px'; 
-    statusElement.style.fontWeight = 'bold'; 
-} else if (status === 'DEAD') {
-    statusElement.textContent = 'DEAD';
-    statusElement.style.color = '#FF3333'; 
-    statusElement.style.fontSize = '13px'; 
-    statusElement.style.fontWeight = 'bold'; 
-}
+            console.log("Status:", status);
+            console.log("Raw delay:", data.delay);
+            console.log("Parsed delay:", delay);
 
-            })
-            .catch(error => {
+            const divisor = 4; 
+
+            if (!isNaN(delay)) {
+                delay = Math.round(delay / divisor);
+                console.log("Processed delay:", delay);  // Debugging log
+            }
+
+            if (status === 'ACTIVE') {
+                statusElement.innerHTML = 'ACTIVE<br><span style="fas fa-bolt"></i>&nbsp;<span style="color: gold;">(' + delay + 'ms)</span>'; 
+                statusElement.style.color = '#00FF00';
+                statusElement.style.fontSize = '13px';
+                statusElement.style.fontWeight = 'bold';
+            } else if (status === 'DEAD') {
+                statusElement.innerHTML = '<strong><i class="fas fa-times-circle"></i> DEAD</strong>';
+                statusElement.style.color = '#FF3333';
+                statusElement.style.fontSize = '13px';
+                statusElement.style.fontWeight = 'bold';
+            }
+        })
+        .catch(error => {
               const statusElement = document.getElementById('status-${ipPort}');
               statusElement.textContent = 'Error';
               statusElement.style.color = 'cyan';
             });
-        </script>        
+        </script>
 
 `;
         } else {
             return `
                 <tr class="config-row">
                     <td class="ip-cell">${config.ip}:${config.port}</td>
-                    <td class="proxy-status" id="status-${ipPort}"><div class="spinner"></div></td>
+                    <td class="proxy-status" id="status-${ipPort}"><strong><i class="fas fa-spinner fa-spin loading-icon"></i></strong><div class="rainbow-text">Loading...</div></td>
                     <td class="border border-gray-700 px-1 py-1 text-center">
                         <img width="40" src="https://installer.us.kg/circle-flags/flags/${config.countryCode.toLowerCase()}.svg" class="ms-2 rounded">
                         </td>
@@ -1206,23 +1728,33 @@ function buildCountryFlag() {
               const spinner = document.getElementById('ping-' + data.proxy + ':' + data.port);
 
       // Ambil data status dan delay
-      const status = data.status || 'UNKNOWN';
-      const delay = data.delay || 'N/A';
+            const status = data.status || 'UNKNOWN';
+            let delay = parseFloat(data.delay) || 'N/A';
 
-              if (status === 'ACTIVE') {
-    statusElement.innerHTML = 'ACTIVE<br><span style="color: gold;">(' + delay + ')</span>'; // Pisahkan ACTIVE dan delay
-    statusElement.style.color = '#00FF00'; 
-    statusElement.style.fontSize = '13px'; 
-    statusElement.style.fontWeight = 'bold'; 
-} else if (status === 'DEAD') {
-    statusElement.textContent = 'DEAD';
-    statusElement.style.color = '#FF3333'; 
-    statusElement.style.fontSize = '13px'; 
-    statusElement.style.fontWeight = 'bold'; 
-}
+            console.log("Status:", status);
+            console.log("Raw delay:", data.delay);
+            console.log("Parsed delay:", delay);
 
-            })
-            .catch(error => {
+            const divisor = 4; 
+
+            if (!isNaN(delay)) {
+                delay = Math.round(delay / divisor);
+                console.log("Processed delay:", delay);  // Debugging log
+            }
+
+            if (status === 'ACTIVE') {
+                statusElement.innerHTML = 'ACTIVE<br><span style="fas fa-bolt"></i>&nbsp;<span style="color: gold;">(' + delay + 'ms)</span>'; 
+                statusElement.style.color = '#00FF00';
+                statusElement.style.fontSize = '13px';
+                statusElement.style.fontWeight = 'bold';
+            } else if (status === 'DEAD') {
+                statusElement.innerHTML = '<strong><i class="fas fa-times-circle"></i> DEAD</strong>';
+                statusElement.style.color = '#FF3333';
+                statusElement.style.fontSize = '13px';
+                statusElement.style.fontWeight = 'bold';
+            }
+        })
+        .catch(error => {
               const statusElement = document.getElementById('status-${ipPort}');
               statusElement.textContent = 'Error';
               statusElement.style.color = 'cyan';
@@ -1273,15 +1805,6 @@ function buildCountryFlag() {
         --glow: 0 0 20px rgba(0, 255, 136, 0.3);
       }
       
-      .spinner {
-  border: 4px solid #f3f3f3; /* Light grey */
-  border-top: 4px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-}
-
       * {
         margin: 0;
         padding: 0;
@@ -1290,14 +1813,17 @@ function buildCountryFlag() {
       }
 
       body {
-        background: var(--darker);
-        color: var(--light);
-        min-height: 85vh;
-        background-image: 
-          radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.1) 0, transparent 50%),
-          radial-gradient(circle at 100% 100%, rgba(0, 255, 255, 0.1) 0, transparent 50%),
-          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300ff88' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      }
+  background: var(--darker);
+  color: var(--light);
+  min-height: 85vh;
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+    url('https://telegra.ph/file/0b9a4c97f231c8bc33aa9.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
 
       .wildcard-dropdown {
   display: flex;
@@ -1434,11 +1960,6 @@ function buildCountryFlag() {
   }
 }
 
-      @keyframes cardFloat {
-        0%, 100% { transform: translateY(0) rotateX(0); }
-        50% { transform: translateY(-10px) rotateX(2deg); }
-      }
-
       .quantum-title {
         font-family: 'Rajdhani', sans-serif;
         font-size: 4rem;
@@ -1451,14 +1972,9 @@ function buildCountryFlag() {
         -webkit-text-fill-color: transparent;
         text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
         position: relative;
-        animation: titlePulse 3s ease-in-out infinite;
       }
 
-      @keyframes titlePulse {
-        0%, 100% { transform: scale(1); filter: brightness(1); }
-        50% { transform: scale(1.02); filter: brightness(1.2); }
-      }
-
+      
       .search-quantum {
         position: relative;
         margin-top: 0.1rem;
@@ -1473,7 +1989,6 @@ function buildCountryFlag() {
     background: rgba(0, 255, 136, 0.05); /* Latar belakang */
     border: 2px solid rgba(0, 255, 136, 0.3); /* Warna border */
     border-radius: 5px; /* Sudut tidak terlalu bulat */
-    transition: all 0.3s ease; /* Efek transisi */
 }
 
       #search-bar:focus {
@@ -1612,9 +2127,7 @@ function buildCountryFlag() {
         box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
         transform: translateY(100%);
         opacity: 0;
-        animation: toastSlide 0.3s forwards;
-        z-index: 1000;
-      }
+        }
 
       @keyframes toastSlide {
         to {
@@ -1759,6 +2272,153 @@ function buildCountryFlag() {
     font-size: 12px; /* Ukuran font untuk teks konten */
 }
 
+@keyframes rainbow {
+      0% { color: red; }
+      14% { color: black; }
+      28% { color: black; }
+      42% { color: green; }
+      57% { color: blue; }
+      71% { color: indigo; }
+      85% { color: violet; }
+      100% { color: red; }
+    }
+    
+      .spinner {
+  border: 4px solid #f3f3f3; /* Light grey */
+  border-top: 4px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+     .quantum-container {
+  background-color: rgba(0, 0, 0, 0.82);
+  flex: 1;
+  padding-top: 20px; /* To avoid content being hidden under the header */
+  padding-bottom: 20px;
+  margin-top: 95px;
+  margin-bottom: 50px; /* To avoid content being hidden under the footer */
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 960px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  /* Tambahkan efek glow */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), /* Glow putih */
+              0 0 30px rgba(0, 150, 255, 0.5);   /* Glow biru */
+  
+  /* Default untuk HP */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Offset ke kiri untuk layar besar (desktop) */
+@media (min-width: 768px) {
+  .container, .content {
+    margin-left: auto; /* Sesuaikan offset ke kiri */
+    margin-right: auto;
+  }
+}
+      .quantum-card {
+  width: 100%;
+    overflow-x: auto; /* Mengaktifkan scroll horizontal */
+    margin-bottom: 0px;
+    border: 1px solid #000; /* Border dengan warna abu-abu */
+    border-radius: 10px; /* Membuat sudut melengkung */
+    padding: 0px; /* Memberi jarak antara border dan konten */
+    background-color: rgba(0, 0, 0, 0.82); /* Warna latar belakang */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6), /* Glow putih */
+              0 0 30px rgba(0, 150, 255, 0.5);   /* Glow biru */
+
+}
+
+ .rainbow-text {
+      font-size: 15px;
+      font-weight: bold;
+      animation: rainbow 2s infinite;
+    }
+
+     .loading-icon {
+    color: #4CAF50; /* Warna untuk ikon spinner */
+    font-size: 30px;
+}
+
+.loading-text {
+    font-size: 18px;
+    color: #FF5722; /* Warna untuk teks 'Loading...' */
+    margin-left: 10px;
+    font-weight: bold; /* Menambahkan ketebalan pada teks */
+}
+
+/* Animasi Checkmark */
+.check-icon {
+  color: green;
+  font-size: 20px;
+  animation: checkAnim 0.3s ease-in-out;
+}
+
+@keyframes checkAnim {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animasi X (Error) */
+.error-icon {
+  color: red;
+  font-size: 20px;
+  animation: errorAnim 0.3s ease-in-out;
+}
+
+@keyframes errorAnim {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.watermark-container {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  font-weight: bold;
+  z-index: 9999;
+  color: #ff0000;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 5px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.watermark-container a {
+  color: #ff0000;
+  text-decoration: none;
+}
+
+.watermark-container a:hover {
+  text-decoration: underline;
+}
+
+.separator {
+  margin: 0 10px; /* Jarak antara teks */
+}
+
+            
     </style>
 </head>
 <body>
@@ -1771,7 +2431,7 @@ function buildCountryFlag() {
             </h1>
             
             <div class="search-quantum" style="display: flex; align-items: center; flex-direction: column;">
-              <div style="display: flex; width: 100%;">
+              <div style="display: flex; width: 100%;"><button class="bg-gradient-to-r from-[#39ff14] to-[#008080] text-[#ffffff] border-2 border-[#39ff14] rounded-md px-2 py-0.5 text-sm transition duration-300 ease-in-out hover:bg-[#008080] hover:text-[#222222]"><a href="/vpn">SUB LINK</a></button>
                 <input type="text" 
                   id="search-bar" 
                   placeholder="Search by IP, CountryCode, or ISP"
@@ -1830,9 +2490,15 @@ function buildCountryFlag() {
           <!-- Showing X to Y of Z Proxies message -->
           <div style="text-align: center; margin-top: 16px; color: var(--primary); font-family: 'Rajdhani', sans-serif;">
             Showing ${startIndex + 1} to ${endIndex} of ${totalFilteredConfigs} Proxies
-          </div>
+            </div>
         </div>
     </div>
+    <div class="watermark-container">
+  <a href="https://t.me/VLTRSSbot" target="_blank">VPNBot</a>
+  <span class="separator">-</span>
+  <a href="https://t.me/sampiiiiu" target="_blank">GeoVPN</a>
+</div>
+
 <script>
         const updateURL = (params) => {
           const url = new URL(window.location.href);
