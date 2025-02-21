@@ -34,7 +34,7 @@ jobs:
     - name: 🔄 Update Proxy Status
       env:
         IP_FILE: './cek/file.txt'
-        API_URL: 'https://ipcf.installer.us.kg/check?ip={ip}:{port}' # Proxy check API URL
+        API_URL: 'https://ipcf.ipcf.geoproject.site/check?ip={ip}:{port}' # Proxy check API URL
       run: |
         python ./cek/update_proxy_status.py
 
