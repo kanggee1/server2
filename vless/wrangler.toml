@@ -31,4 +31,4 @@ routes = [
 workers_dev = false
 
 [vars]
-CHECK_API_BASE = "https://ipcf.installer.us.kg"
+CHECK_API_BASE = "https://ipcf.geoproject.site"
