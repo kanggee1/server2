@@ -33,7 +33,7 @@ def main():
     input_file = os.getenv('IP_FILE', 'cek/file.txt')
     alive_file = 'cek/proxyList.txt'
     dead_file = 'cek/dead.txt'
-    api_url_template = os.getenv('API_URL', 'https://ipcf.ipcf.geoproject.site/check?ip={ip}:{port}')
+    api_url_template = os.getenv('API_URL', 'https://ipcf.ipcf.gpj.us.kg/check?ip={ip}:{port}')
 
     # Pastikan file output kosong sebelum menulis data baru
     open(alive_file, "w").close()
