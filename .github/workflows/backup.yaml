@@ -11,7 +11,7 @@ on:
         description: "🏠 Domain Name on Cloudflare"
         required: false
         type: string
-        default: geoproject.site
+        default: gpj.us.kg
 
 jobs:
   deploy:
