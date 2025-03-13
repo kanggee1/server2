@@ -1,7 +1,9 @@
-const fs = require("fs").promises;
-const path = require("path");
-const fetch = require("node-fetch");
-require("dotenv").config();
+import fs from "fs/promises";
+import path from "path";
+import fetch from "node-fetch";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Konfigurasi file
 const INPUT_FILE = process.env.IP_FILE || path.join("cek", "file.txt");
@@ -13,9 +15,9 @@ const API_URL_TEMPLATE = process.env.API_URL || "https://api.checker-ip.web.id/c
 async function checkProxy(ip, port) {
     const apiUrl = API_URL_TEMPLATE.replace("{ip}", ip).replace("{port}", port);
     try {
-        const response = await fetch(apiUrl, { timeout: 60000 }); // Timeout 60 detik
+        const response = await fetch(apiUrl, { timeout: 60000 });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        
+
         const data = await response.json();
         if (data.status && data.status.toLowerCase() === "active") {
             console.log(`${ip}:${port} is ✅ ACTIVE`);
@@ -33,11 +35,9 @@ async function checkProxy(ip, port) {
 // Fungsi utama
 async function main() {
     try {
-        // Hapus isi file ALIVE dan DEAD sebelum digunakan
         await fs.writeFile(ALIVE_FILE, "");
         await fs.writeFile(DEAD_FILE, "");
 
-        // Baca file input
         const fileData = await fs.readFile(INPUT_FILE, "utf-8");
         const proxyList = fileData
             .split("\n")
@@ -50,11 +50,8 @@ async function main() {
         }
 
         console.log(`Memeriksa ${proxyList.length} proxy...`);
-
-        // Cek proxy secara paralel
         const results = await Promise.all(proxyList.map(([ip, port]) => checkProxy(ip, port)));
 
-        // Simpan hasil ke file
         const aliveProxies = results.filter(p => p.status === "alive").map(p => `${p.ip},${p.port}`).join("\n");
         const deadProxies = results.filter(p => p.status === "dead").map(p => `${p.ip},${p.port}`).join("\n");
 
@@ -68,5 +65,4 @@ async function main() {
     }
 }
 
-// Jalankan skrip
 main();
