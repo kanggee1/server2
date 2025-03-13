@@ -1,62 +1,79 @@
 import requests
 import csv
 import os
+import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# Konfigurasi logging
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
 def check_proxy(row, api_url_template, alive_file, dead_file):
+    """
+    Mengecek status proxy berdasarkan IP dan port yang diberikan.
+    Hasil pengecekan akan disimpan di file `alive_file` atau `dead_file`.
+    """
     ip, port = row[0].strip(), row[1].strip()
     api_url = api_url_template.format(ip=ip, port=port)
+
     try:
         response = requests.get(api_url, timeout=60)
         response.raise_for_status()
         data = response.json()
 
         if data.get("status", "").lower() == "active":
-            print(f"{ip}:{port} is ✅ ACTIVE")
+            logging.info(f"{ip}:{port} is ✅ ACTIVE")
             with open(alive_file, "a", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerow(row)
+                csv.writer(f).writerow(row)
             return True  # Proxy hidup
         else:
-            print(f"{ip}:{port} is ❌ DEAD")
+            logging.info(f"{ip}:{port} is ❌ DEAD")
             with open(dead_file, "a", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerow(row)
+                csv.writer(f).writerow(row)
             return False  # Proxy mati
     except requests.exceptions.RequestException as e:
-        print(f"Error checking {ip}:{port}: {e}")
+        logging.error(f"Error checking {ip}:{port}: {e}")
     except ValueError as ve:
-        print(f"Error parsing JSON for {ip}:{port}: {ve}")
+        logging.error(f"Error parsing JSON for {ip}:{port}: {ve}")
     return False
 
 def main():
-    input_file = os.getenv('IP_FILE', 'cek/file.txt')
-    alive_file = 'cek/proxyList.txt'
-    dead_file = 'cek/dead.txt'
-    api_url_template = os.getenv('API_URL', 'https://api.checker-ip.web.id/check?ip={ip}:{port}')
+    """Fungsi utama untuk membaca daftar proxy, mengecek status, dan menyimpan hasilnya."""
+    input_file = os.getenv("IP_FILE", "cek/file.txt")
+    alive_file = os.getenv("ALIVE_FILE", "cek/proxyList.txt")
+    dead_file = os.getenv("DEAD_FILE", "cek/dead.txt")
+    api_url_template = os.getenv("API_URL", "https://api.checker-ip.web.id/check?ip={ip}:{port}")
 
-    # Pastikan file output kosong sebelum menulis data baru
-    open(alive_file, "w").close()
-    open(dead_file, "w").close()
+    # Kosongkan file sebelum digunakan kembali
+    for file in (alive_file, dead_file):
+        with open(file, "w") as f:
+            f.truncate(0)
 
+    # Baca daftar proxy dari file
     try:
         with open(input_file, "r") as f:
             reader = csv.reader(f)
-            rows = list(reader)
+            rows = [row for row in reader if len(row) >= 2]
     except FileNotFoundError:
-        print(f"File {input_file} tidak ditemukan.")
+        logging.error(f"File {input_file} tidak ditemukan.")
         return
 
-    with ThreadPoolExecutor(max_workers=50) as executor:
-        futures = [
-            executor.submit(check_proxy, row, api_url_template, alive_file, dead_file)
-            for row in rows if len(row) >= 2
-        ]
-        for future in as_completed(futures):
-            future.result()  # Tunggu setiap proses selesai
+    if not rows:
+        logging.warning("Tidak ada data proxy yang valid dalam file input.")
+        return
 
-    print(f"Semua proxy yang ALIVE telah disimpan di {alive_file}.")
-    print(f"Semua proxy yang DEAD telah disimpan di {dead_file}.")
+    # Gunakan ThreadPoolExecutor untuk memproses proxy secara paralel
+    with ThreadPoolExecutor(max_workers=50) as executor:
+        futures = {executor.submit(check_proxy, row, api_url_template, alive_file, dead_file): row for row in rows}
+
+        for future in as_completed(futures):
+            future.result()  # Tunggu proses selesai
+
+    logging.info(f"Semua proxy yang ALIVE telah disimpan di {alive_file}.")
+    logging.info(f"Semua proxy yang DEAD telah disimpan di {dead_file}.")
 
 if __name__ == "__main__":
     main()
