@@ -7,7 +7,7 @@ const aliveFile = "cek/proxyList.txt";
 const deadFile = "cek/dead.txt";
 const apiUrlTemplate = process.env.API_URL || "https://api.checker-ip.web.id/check?ip={ip}:{port}";
 
-const limit = pLimit(50); // Batasi jumlah request yang berjalan bersamaan
+const limit = pLimit(100); // Batasi jumlah request yang berjalan bersamaan
 
 async function checkProxy(line) {
     const parts = line.split(",");
@@ -17,7 +17,7 @@ async function checkProxy(line) {
     const apiUrl = apiUrlTemplate.replace("{ip}", ip).replace("{port}", port);
 
     try {
-        const response = await fetch(apiUrl, { timeout: 60000 });
+        const response = await fetch(apiUrl, { timeout: 5000 });
         if (!response.ok) {
             console.log(`⚠️ ${ip}:${port} - HTTP ${response.status}`);
             return false;
@@ -25,10 +25,10 @@ async function checkProxy(line) {
         
         const data = await response.json();
         if (data.status && data.status.toLowerCase() === "active") {
-            console.log(`✅ ${ip}:${port} is ACTIVE`);
+            console.log(`${ip}:${port} is ACTIVE ✅`);
             return `${ip},${port},${country},${isp}`; // Format untuk file output
         } else {
-            console.log(`❌ ${ip}:${port} is DEAD`);
+            console.log(`${ip}:${port} is DEAD ❌`);
             return false;
         }
     } catch (error) {
