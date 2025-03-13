@@ -12,13 +12,13 @@ def check_proxy(row, api_url_template, alive_file, dead_file):
         data = response.json()
 
         if data.get("status", "").lower() == "active":
-            print(f"{ip}:{port} is ALIVE")
+            print(f"{ip}:{port} is ✅ ACTIVE")
             with open(alive_file, "a", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow(row)
             return True  # Proxy hidup
         else:
-            print(f"{ip}:{port} is DEAD")
+            print(f"{ip}:{port} is ❌ DEAD")
             with open(dead_file, "a", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow(row)
@@ -33,7 +33,7 @@ def main():
     input_file = os.getenv('IP_FILE', 'cek/file.txt')
     alive_file = 'cek/proxyList.txt'
     dead_file = 'cek/dead.txt'
-    api_url_template = os.getenv('API_URL', 'https://ipcf.ipcf.gpj.us.kg/check?ip={ip}:{port}')
+    api_url_template = os.getenv('API_URL', 'https://api.checker-ip.web.id/check?ip={ip}:{port}')
 
     # Pastikan file output kosong sebelum menulis data baru
     open(alive_file, "w").close()
