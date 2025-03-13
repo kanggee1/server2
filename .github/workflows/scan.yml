@@ -1,38 +1,65 @@
-name: Proxy Scanner
+name: 🌐 Update Proxy IP Status
 
 on:
-  workflow_dispatch:
+  # Menjadwalkan workflow untuk berjalan setiap 3 hari pada tengah malam
   schedule:
-    - cron: "0 */4 * * *"
+    - cron: '0 0 */3 * *'
+
+  # Memungkinkan pemicu manual
+  workflow_dispatch:
 
 jobs:
-  scanner:
+  update-proxies:
     runs-on: ubuntu-latest
-    concurrency:
-      group: proxy-scan
+    name: 🚀 Update Proxy IP Status
 
     steps:
-      # Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+    # Step 1: Checkout repository
+    - name: 📂 Checkout Repository
+      uses: actions/checkout@v3
 
-      # Install Bun
-      - name: Use Bun
-        uses: oven-sh/setup-bun@v2
+    # Step 2: Setup Node.js
+    - name: 🟢 Set Up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
 
-      # Run proxy scanner
-      - name: Start Scan
-        run: |
-          bun install && bun run ./vless/proxyip.ts
+    # Step 3: Install dependencies
+    - name: 📦 Install Dependencies
+      run: |
+        npm install
 
-      # Publish the result
-      - name: Publish Result
-        if: ${{ success() }}
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: '["./*List.txt", "./*List.json"]'
-          fetch: false
-          tag_push: "--force"
-          message: "Update proxy list"
+    # Step 4: Run the Node.js script to update proxy status
+    - name: 🔄 Update Proxy Status
+      env:
+        IP_FILE: './cek/file.txt'
+        API_URL: 'https://api.checker-ip.web.id/check?ip={ip}:{port}'
+      run: |
+        node ./cek/checkProxies.js
+
+    # Step 5: Commit and push changes if any
+    - name: 📤 Commit and Push Changes
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+        # Tambahkan file ke staging area jika ada perubahan
+        if [ -f cek/proxyList.txt ]; then
+          git add cek/proxyList.txt && echo "✅ cek/proxyList.txt berhasil ditambahkan ke staging."
+        else
+          echo "⚠️ cek/proxyList.txt tidak ditemukan."
+        fi
+
+        if [ -f cek/dead.txt ]; then
+          git add cek/dead.txt && echo "✅ cek/dead.txt berhasil ditambahkan ke staging."
+        else
+          echo "⚠️ cek/dead.txt tidak ditemukan."
+        fi
+
+        # Commit hanya jika ada perubahan
+        if git diff --cached --exit-code; then
+          echo "✅ Tidak ada perubahan yang perlu di-commit."
+        else
+          git commit -m "🔄 Update proxy IP status" && echo "✅ Perubahan berhasil di-commit."
+          git push && echo "🚀 Perubahan berhasil di-push ke repository."
+        fi
