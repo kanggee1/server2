@@ -2,67 +2,75 @@ import fs from "fs/promises";
 import fetch from "node-fetch";
 import pLimit from "p-limit";
 
-const API_URL_TEMPLATE = process.env.API_URL || "https://api.checker-ip.web.id/check?ip={ip}:{port}";
-const INPUT_FILE = process.env.IP_FILE || "cek/file.txt";
-const ALIVE_FILE = "cek/proxyList.txt";
-const DEAD_FILE = "cek/dead.txt";
+const inputFile = process.env.IP_FILE || "cek/file.txt";
+const aliveFile = "cek/proxyList.txt";
+const deadFile = "cek/dead.txt";
+const apiUrlTemplate = process.env.API_URL || "https://api.checker-ip.web.id/check?ip={ip}:{port}";
 
-const limit = pLimit(10); // Batasi 10 request bersamaan
+const limit = pLimit(50); // Batasi jumlah request yang berjalan bersamaan
 
-async function fetchWithRetry(url, retries = 3, delay = 5000) {
-    for (let i = 0; i < retries; i++) {
-        try {
-            const response = await fetch(url, { timeout: 60000 });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return await response.json();
-        } catch (error) {
-            console.error(`Attempt ${i + 1}: Error fetching ${url} - ${error.message}`);
-            if (i < retries - 1) await new Promise(res => setTimeout(res, delay));
+async function checkProxy(line) {
+    const parts = line.split(",");
+    if (parts.length < 4) return null; // Abaikan baris yang tidak sesuai format
+
+    const [ip, port, country, isp] = parts.map(p => p.trim());
+    const apiUrl = apiUrlTemplate.replace("{ip}", ip).replace("{port}", port);
+
+    try {
+        const response = await fetch(apiUrl, { timeout: 60000 });
+        if (!response.ok) {
+            console.log(`⚠️ ${ip}:${port} - HTTP ${response.status}`);
+            return false;
         }
-    }
-    return null;
-}
-
-async function checkProxy(ip, port, country, isp) {
-    const apiUrl = API_URL_TEMPLATE.replace("{ip}", ip).replace("{port}", port);
-    const data = await fetchWithRetry(apiUrl);
-
-    if (data && data.status?.toLowerCase() === "active") {
-        console.log(`${ip}:${port} is ✅ ACTIVE`);
-        return `${ip},${port},${country},${isp}`;
-    } else {
-        console.log(`${ip}:${port} is ❌ DEAD`);
-        return null;
+        
+        const data = await response.json();
+        if (data.status && data.status.toLowerCase() === "active") {
+            console.log(`✅ ${ip}:${port} is ACTIVE`);
+            return `${ip},${port},${country},${isp}`; // Format untuk file output
+        } else {
+            console.log(`❌ ${ip}:${port} is DEAD`);
+            return false;
+        }
+    } catch (error) {
+        console.error(`Error checking ${ip}:${port}: ${error.message}`);
+        return false;
     }
 }
 
 async function main() {
     try {
-        const fileContent = await fs.readFile(INPUT_FILE, "utf-8");
-        const proxies = fileContent.split("\n").map(line => line.trim().split(",")).filter(row => row.length >= 4);
+        console.log("🚀 Starting Proxy Check...");
 
-        if (proxies.length === 0) {
-            console.log("❌ Tidak ada proxy yang ditemukan di file.");
-            return;
+        // Baca file input
+        const data = await fs.readFile(inputFile, "utf-8");
+        const proxies = data.split("\n").map(line => line.trim()).filter(line => line);
+
+        // Kosongkan file output sebelum menulis data baru
+        await fs.writeFile(aliveFile, "", "utf-8");
+        await fs.writeFile(deadFile, "", "utf-8");
+
+        // Cek proxy secara paralel
+        const results = await Promise.all(proxies.map(proxy => limit(() => checkProxy(proxy))));
+
+        // Simpan hasilnya ke file masing-masing
+        const aliveProxies = results.filter(result => result);
+        const deadProxies = results.filter(result => result === false);
+
+        if (aliveProxies.length) {
+            await fs.writeFile(aliveFile, aliveProxies.join("\n") + "\n", "utf-8");
+            console.log(`✅ Semua proxy yang aktif disimpan di ${aliveFile}`);
         }
 
-        const tasks = proxies.map(([ip, port, country, isp]) => 
-            limit(() => checkProxy(ip, port, country, isp))
-        );
-        const results = await Promise.all(tasks);
+        if (deadProxies.length) {
+            await fs.writeFile(deadFile, deadProxies.map(p => p || "").join("\n") + "\n", "utf-8");
+            console.log(`❌ Semua proxy yang mati disimpan di ${deadFile}`);
+        }
 
-        const aliveProxies = results.filter(p => p !== null).join("\n");
-        const deadProxies = proxies.filter((_, i) => results[i] === null).map(p => p.join(",")).join("\n");
-
-        await fs.writeFile(ALIVE_FILE, aliveProxies, "utf-8");
-        await fs.writeFile(DEAD_FILE, deadProxies, "utf-8");
-
-        console.log(`✅ Semua proxy yang ALIVE disimpan di ${ALIVE_FILE}`);
-        console.log(`✅ Semua proxy yang DEAD disimpan di ${DEAD_FILE}`);
-
+        console.log("🎉 Proxy check selesai!");
     } catch (error) {
-        console.error("❌ Terjadi kesalahan:", error);
+        console.error("🚨 Error:", error);
     }
 }
 
+// Jalankan skrip
 main();
