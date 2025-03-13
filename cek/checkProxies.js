@@ -1,67 +1,67 @@
 import fs from "fs/promises";
-import path from "path";
 import fetch from "node-fetch";
-import dotenv from "dotenv";
+import pLimit from "p-limit";
 
-dotenv.config();
-
-// Konfigurasi file
-const INPUT_FILE = process.env.IP_FILE || path.join("cek", "file.txt");
-const ALIVE_FILE = process.env.ALIVE_FILE || path.join("cek", "proxyList.txt");
-const DEAD_FILE = process.env.DEAD_FILE || path.join("cek", "dead.txt");
 const API_URL_TEMPLATE = process.env.API_URL || "https://api.checker-ip.web.id/check?ip={ip}:{port}";
+const INPUT_FILE = process.env.IP_FILE || "cek/file.txt";
+const ALIVE_FILE = "cek/proxyList.txt";
+const DEAD_FILE = "cek/dead.txt";
 
-// Fungsi untuk mengecek proxy
-async function checkProxy(ip, port) {
-    const apiUrl = API_URL_TEMPLATE.replace("{ip}", ip).replace("{port}", port);
-    try {
-        const response = await fetch(apiUrl, { timeout: 60000 });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+const limit = pLimit(10); // Batasi 10 request bersamaan
 
-        const data = await response.json();
-        if (data.status && data.status.toLowerCase() === "active") {
-            console.log(`${ip}:${port} is ✅ ACTIVE`);
-            return { ip, port, status: "alive" };
-        } else {
-            console.log(`${ip}:${port} is ❌ DEAD`);
-            return { ip, port, status: "dead" };
+async function fetchWithRetry(url, retries = 3, delay = 5000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url, { timeout: 60000 });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
+        } catch (error) {
+            console.error(`Attempt ${i + 1}: Error fetching ${url} - ${error.message}`);
+            if (i < retries - 1) await new Promise(res => setTimeout(res, delay));
         }
-    } catch (error) {
-        console.error(`Error checking ${ip}:${port}:`, error.message);
-        return { ip, port, status: "dead" };
+    }
+    return null;
+}
+
+async function checkProxy(ip, port, country, isp) {
+    const apiUrl = API_URL_TEMPLATE.replace("{ip}", ip).replace("{port}", port);
+    const data = await fetchWithRetry(apiUrl);
+
+    if (data && data.status?.toLowerCase() === "active") {
+        console.log(`${ip}:${port} is ✅ ACTIVE`);
+        return `${ip},${port},${country},${isp}`;
+    } else {
+        console.log(`${ip}:${port} is ❌ DEAD`);
+        return null;
     }
 }
 
-// Fungsi utama
 async function main() {
     try {
-        await fs.writeFile(ALIVE_FILE, "");
-        await fs.writeFile(DEAD_FILE, "");
+        const fileContent = await fs.readFile(INPUT_FILE, "utf-8");
+        const proxies = fileContent.split("\n").map(line => line.trim().split(",")).filter(row => row.length >= 4);
 
-        const fileData = await fs.readFile(INPUT_FILE, "utf-8");
-        const proxyList = fileData
-            .split("\n")
-            .map(line => line.trim().split(","))
-            .filter(row => row.length >= 2);
-
-        if (proxyList.length === 0) {
-            console.warn("Tidak ada proxy yang valid dalam file input.");
+        if (proxies.length === 0) {
+            console.log("❌ Tidak ada proxy yang ditemukan di file.");
             return;
         }
 
-        console.log(`Memeriksa ${proxyList.length} proxy...`);
-        const results = await Promise.all(proxyList.map(([ip, port]) => checkProxy(ip, port)));
+        const tasks = proxies.map(([ip, port, country, isp]) => 
+            limit(() => checkProxy(ip, port, country, isp))
+        );
+        const results = await Promise.all(tasks);
 
-        const aliveProxies = results.filter(p => p.status === "alive").map(p => `${p.ip},${p.port}`).join("\n");
-        const deadProxies = results.filter(p => p.status === "dead").map(p => `${p.ip},${p.port}`).join("\n");
+        const aliveProxies = results.filter(p => p !== null).join("\n");
+        const deadProxies = proxies.filter((_, i) => results[i] === null).map(p => p.join(",")).join("\n");
 
-        if (aliveProxies) await fs.appendFile(ALIVE_FILE, aliveProxies + "\n");
-        if (deadProxies) await fs.appendFile(DEAD_FILE, deadProxies + "\n");
+        await fs.writeFile(ALIVE_FILE, aliveProxies, "utf-8");
+        await fs.writeFile(DEAD_FILE, deadProxies, "utf-8");
 
-        console.log(`✅ Semua proxy yang ALIVE telah disimpan di ${ALIVE_FILE}.`);
-        console.log(`❌ Semua proxy yang DEAD telah disimpan di ${DEAD_FILE}.`);
+        console.log(`✅ Semua proxy yang ALIVE disimpan di ${ALIVE_FILE}`);
+        console.log(`✅ Semua proxy yang DEAD disimpan di ${DEAD_FILE}`);
+
     } catch (error) {
-        console.error("Terjadi kesalahan:", error.message);
+        console.error("❌ Terjadi kesalahan:", error);
     }
 }
 
