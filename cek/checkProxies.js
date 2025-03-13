@@ -7,7 +7,7 @@ const aliveFile = "cek/proxyList.txt";
 const deadFile = "cek/dead.txt";
 const apiUrlTemplate = process.env.API_URL || "https://api.checker-ip.web.id/check?ip={ip}:{port}";
 
-const limit = pLimit(500); // Batasi jumlah request yang berjalan bersamaan
+const limit = pLimit(300); // Batasi jumlah request yang berjalan bersamaan
 
 async function checkProxy(line) {
     const parts = line.split(",");
