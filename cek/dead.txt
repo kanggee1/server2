@@ -1,239 +1,215 @@
-178.32.106.119,2053,FR,OVH SAS
-37.1.194.153,2053,DE,IROKO Networks Corporation
-103.115.4.2,2053,MM,Information Beam Company Limited
-37.1.194.153,8443,DE,IROKO Networks Corporation
-37.1.197.77,8443,DE,IROKO Networks Corporation
-37.1.197.77,2053,DE,IROKO Networks Corporation
-104.152.187.165,443,US,Centrilogic Inc
-77.221.144.41,2053,FI,New Hosting Technologies LLC
-104.234.50.161,2053,US,Private Customer
-185.105.89.222,8443,RU,FIRST SERVER LIMITED
-185.105.89.222,2053,RU,FIRST SERVER LIMITED
-104.234.50.59,2053,US,Private Customer
-185.125.100.72,2053,DE,Aeza International LTD
-185.125.100.72,8443,DE,Aeza International LTD
-185.125.101.217,2053,FI,Aeza International LTD
-107.189.12.152,443,LU,FranTech Solutions
-77.246.100.187,8443,NL,Amsterdam Netherlands
-77.73.131.77,8443,DE,Aeza International LTD
-77.73.131.77,2053,DE,Aeza International LTD
-109.107.174.65,8443,NL,Amsterdam Netherlands
-109.107.174.65,2053,NL,Amsterdam Netherlands
-109.107.172.27,8443,NL,Amsterdam Netherlands
-38.180.99.187,2053,NL,3NT SOLUTIONS LLP
-38.180.99.187,8443,NL,3NT SOLUTIONS LLP
-109.120.177.190,2053,DE,Aeza International LTD
-185.198.234.137,443,NL,RCS Technologies FZE LLC
-185.206.93.129,4343,IR,AbrArvan IaaS
-79.137.202.223,8443,DE,Aeza International LTD
-185.217.197.121,8443,DE,Aeza International LTD
-79.137.202.223,2053,DE,Aeza International LTD
-185.217.197.121,2053,DE,Aeza International LTD
-79.137.205.240,2002,DE,AEZA GROUP Ltd
-79.137.205.240,8443,DE,AEZA GROUP Ltd
-79.137.205.240,2010,DE,AEZA GROUP Ltd
-79.137.205.240,2053,DE,AEZA GROUP Ltd
-79.137.205.240,2003,DE,AEZA GROUP Ltd
-185.221.219.7,443,NL,Global Managed Hosting Inc
-112.158.77.21,50034,KR,LG POWERCOMM
-112.164.36.120,50001,KR,Korea Telecom
-8.219.77.72,5027,SG,Alibaba Cloud Singapore Private Limited
-43.159.196.17,443,HK,6 COLLYER QUAY
-112.184.234.66,22105,KR,Korea Telecom
-45.112.195.101,2053,FR,Jules DurandArnaudet
-80.253.255.51,443,TR,TEKNOSOS BILISIM HIZMETLERI VE TIC LTD STI
-45.12.146.71,2053,FI,WorkTitans BV
-45.12.146.71,8443,FI,WorkTitans BV
-114.204.251.51,36167,KR,SK Broadband Co Ltd
-115.40.206.235,50001,KR,LG HelloVision Corp
-115.40.244.240,12696,KR,LG HelloVision Corp
-115.94.122.118,50001,KR,LG DACOM Corporation
-115.40.244.240,18888,KR,LG HelloVision Corp
-185.237.98.147,10043,GB,OMC COMPUTERS  COMMUNICATIONS LTD
-45.128.52.158,2053,CH,LVNET LTD
-82.117.227.38,16403,DE,GCore Labs Customer assignment
-185.238.169.177,443,NL,IROKO Networks Corporation
-82.117.245.71,2053,DE,Witine Limited
-117.94.39.135,11443,CN,CHINANET jiangsu province network
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-116.47.10.236,20500,KR,LG POWERCOMM
-45.129.199.155,443,EE,BlueVPS OU
-116.47.10.236,11102,KR,LG POWERCOMM
-116.47.10.236,10912,KR,LG POWERCOMM
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,11443,CN,CHINANET jiangsu province network
-116.47.10.236,12495,KR,LG POWERCOMM
-116.47.10.236,12561,KR,LG POWERCOMM
-116.47.10.236,12235,KR,LG POWERCOMM
-116.47.10.236,10332,KR,LG POWERCOMM
-116.47.10.236,16043,KR,LG POWERCOMM
-118.139.209.196,10022,KR,LG HelloVision Corp
-116.47.10.236,10095,KR,LG POWERCOMM
-116.47.10.236,21302,KR,LG POWERCOMM
-116.47.10.236,12149,KR,LG POWERCOMM
-116.47.10.236,21308,KR,LG POWERCOMM
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,11443,CN,CHINANET jiangsu province network
-117.94.39.135,11443,CN,CHINANET jiangsu province network
-117.94.39.135,11443,CN,CHINANET jiangsu province network
-117.94.39.135,11443,CN,CHINANET jiangsu province network
-117.94.39.135,14443,CN,CHINANET jiangsu province network
-117.94.39.135,11443,CN,CHINANET jiangsu province network
-117.94.39.135,11443,CN,CHINANET jiangsu province network
-185.80.53.21,8444,NL,HZ Hosting Ltd
-45.144.232.74,443,NL,Baykov Ilya Sergeevich
-185.93.88.101,2053,IR,Web Dadeh Paydar Co Ltd
-121.162.96.66,50000,KR,Korea Telecom
-45.149.63.147,2053,PL,NET 45 149 63 0 24
-121.175.234.96,50001,KR,Korea Telecom
-85.192.63.127,8443,DE,AEZA GROUP Ltd
-85.192.63.127,2010,DE,AEZA GROUP Ltd
-121.191.143.11,50000,KR,Korea Telecom
-85.192.63.127,2002,DE,AEZA GROUP Ltd
-85.192.63.127,2053,DE,AEZA GROUP Ltd
-121.180.79.228,10084,KR,Korea Telecom
-121.180.79.228,10011,KR,Korea Telecom
-85.192.63.127,2501,DE,AEZA GROUP Ltd
-121.180.79.228,35101,KR,Korea Telecom
-122.210.19.25,20087,JP,UCOM Corporation
-122.210.19.25,38647,JP,UCOM Corporation
-85.203.42.50,11443,NL,RoyaleHosting BV
-122.210.19.25,36167,JP,UCOM Corporation
-122.210.19.25,28045,JP,UCOM Corporation
-85.239.151.167,443,DE,MyAcct LTD
-86.38.156.133,2053,DE,null
-86.38.156.96,2053,DE,null
-87.107.54.78,4343,IR,ParsShabakehAzarakhsh
-13.250.131.37,443,SG,Amazon Data Services Singapore
-45.85.93.83,443,CH,SERVA ONE LTD
-89.110.106.137,2053,NL,Amsterdam Netherlands
-89.110.106.137,8443,NL,Amsterdam Netherlands
-89.110.123.197,8443,NL,Amsterdam Netherlands
-45.89.109.82,8443,JP,WorkTitans BV
-45.89.109.82,2053,JP,WorkTitans BV
-138.124.14.217,8443,RU,Aeza International LTD
-138.124.14.236,8443,RU,Aeza International LTD
-138.124.14.236,2053,RU,Aeza International LTD
-138.124.14.217,2053,RU,Aeza International LTD
-192.99.252.240,2053,CA,OVH SAS
-46.17.43.237,54596,RU,LLC BAXET
-193.222.99.215,2053,DE,play2gocloud  Cheap and reliable hosting
-46.8.237.3,443,FI,CGI GLOBAL LIMITED
-193.43.79.141,8443,FI,as56971 network
-193.43.79.141,2053,FI,as56971 network
-142.171.80.234,11920,US,MULTACOM CORPORATION
-142.93.109.255,443,DE,DigitalOcean LLC
-194.113.37.242,2053,US,HOST TELECOM LTD
-194.113.37.242,8443,US,HOST TELECOM LTD
-194.113.37.221,8443,US,HOST TELECOM LTD
-159.223.142.20,2053,US,DigitalOcean LLC
-167.172.186.130,2053,DE,DigitalOcean LLC
-167.172.186.130,8443,DE,DigitalOcean LLC
-146.19.143.205,443,EE,BlueVPS OU
-146.19.143.205,8443,EE,BlueVPS OU
-49.142.138.159,12082,KR,HYUNDAI COMMUNICATIONS   NETWORK
-194.26.141.77,443,EE,BlueVPS OU
-194.26.141.77,8443,EE,BlueVPS OU
-49.169.160.43,50001,KR,LG POWERCOMM
-49.169.160.43,50000,KR,LG POWERCOMM
-147.45.40.109,8443,DE,Aeza International LTD
-147.45.40.109,2053,DE,Aeza International LTD
-91.199.32.152,8443,GB,HR SYSHEAD
-91.199.32.152,2053,GB,HR SYSHEAD
-5.144.182.156,2053,GB,ahbr company limited
-5.160.52.32,30003,IR,Respina
-5.178.106.18,2053,DE,ahbr company limited
-194.76.173.183,2053,DE,IPXO
-5.178.106.91,2053,DE,ahbr company limited
-5.181.219.103,16238,US,Hostsymbol Pte Ltd
-91.92.206.174,27784,IR,Telecommunication Company of Tehran
-91.92.206.174,465,IR,Telecommunication Company of Tehran
-148.135.111.27,45547,US,Brander Group Inc
-148.135.111.27,26364,US,Brander Group Inc
-91.92.187.73,20880,IR,Telecommunication Company of Tehran
-5.182.86.39,2053,DE,Aeza International LTD
-5.182.86.39,8443,DE,Aeza International LTD
-195.135.252.246,443,LV,SIA VEESP
-149.28.158.103,10030,SG,Vultr Holdings LLC
-92.223.2.5,2053,AM,GCore Labs Customer assignment
-93.183.124.61,2053,NL,Amsterdam Netherlands
-93.183.124.61,8443,NL,Amsterdam Netherlands
-150.241.86.179,2053,SE,Aeza International LTD
-93.183.90.218,2053,NL,Amsterdam Netherlands
-5.35.70.155,443,NL,Amsterdam Netherlands
-94.228.169.225,8443,DE,Aeza International LTD
-94.228.169.225,2053,DE,Aeza International LTD
-94.182.209.5,30000,IR,SHTLNETDED
-152.53.14.140,8443,DE,powered by ANX
-152.53.107.138,2053,NL,netcup GmbH
-152.53.14.140,2053,DE,powered by ANX
-152.53.104.26,8443,NL,netcup GmbH
-152.53.54.193,8443,US,netcup GmbH
-157.254.231.77,443,US,Aiyun HK Network Technology Limited
-95.164.46.119,2053,IT,WorkTitans BV
-2.57.242.75,2053,FR,RCS Technologies FZE LLC
-202.61.200.220,8880,DE,netcup GmbH
-202.61.200.220,8080,DE,netcup GmbH
-202.61.200.220,8088,DE,netcup GmbH
-159.223.142.20,8443,US,DigitalOcean LLC
-202.84.53.85,19999,JP,Azumino Network Community TV
-159.100.9.253,8443,DE,firstcolo GmbH
-159.100.9.253,2053,DE,firstcolo GmbH
-162.19.149.188,2053,DE,Zagrebin Denys
-162.19.149.188,8443,DE,Zagrebin Denys
-207.174.30.197,2053,NL,IPFB LLC
-95.217.220.228,8443,FI,Hetzner Online GmbH
-164.92.175.133,2053,DE,DigitalOcean LLC
-164.92.175.133,8443,DE,DigitalOcean LLC
-165.22.193.7,2083,NL,DigitalOcean LLC
-59.1.137.85,50000,KR,Korea Telecom
-167.172.186.130,8443,DE,DigitalOcean LLC
-212.118.52.122,8443,NL,Amsterdam Netherlands
-212.118.52.122,2053,NL,Amsterdam Netherlands
-59.12.109.110,50000,KR,Korea Telecom
-167.172.186.130,2053,DE,DigitalOcean LLC
-59.24.250.70,50000,KR,Korea Telecom
-212.34.152.212,2053,NL,Amsterdam Netherlands
-212.34.149.244,2053,NL,Amsterdam Netherlands
-212.34.152.212,8443,NL,Amsterdam Netherlands
-171.22.124.205,2053,NL,WorkTitans BV
-213.108.21.242,2053,DE,Aeza International LTD
-213.108.21.242,8443,DE,Aeza International LTD
-89.110.123.230,443,NL,Amsterdam Netherlands
-172.245.64.141,443,US,RackNerd LLC
-213.176.65.196,443,FI,Aeza International LTD
-193.3.168.212,443,NL,Podaon SIA
-213.176.67.111,8443,DE,Aeza International LTD
-213.176.67.217,8443,DE,Aeza International LTD
-213.176.67.187,8443,DE,Aeza International LTD
-213.176.67.111,2053,DE,Aeza International LTD
-213.176.67.217,2053,DE,Aeza International LTD
-213.176.67.219,8443,DE,Aeza International LTD
-213.176.67.201,2053,DE,Aeza International LTD
-213.176.67.201,8443,DE,Aeza International LTD
-213.176.67.187,2053,DE,Aeza International LTD
-213.176.67.219,2053,DE,Aeza International LTD
-213.176.75.101,4433,DE,Aeza International LTD
-175.196.105.220,21235,KR,Korea Telecom
-175.212.101.134,50001,KR,Korea Telecom
-176.124.199.38,8443,DE,Aeza International LTD
-176.124.199.38,2053,DE,Aeza International LTD
-176.124.203.240,2053,DE,Aeza International LTD
-65.108.243.114,443,FI,Hetzner Online GmbH
-5.182.38.135,443,HU,WorkTitans BV
-176.124.32.87,8443,EE,BlueVPS OU
-176.124.32.137,8443,EE,BlueVPS OU
-176.124.32.137,443,EE,BlueVPS OU
-218.147.160.41,50000,KR,Korea Telecom
-218.83.90.22,30006,CN,CHINANET Shanghai province network
-220.77.58.170,50000,KR,Korea Telecom
-220.79.185.100,12248,KR,Korea Telecom
-222.113.74.67,50000,KR,Korea Telecom
-222.113.74.67,50001,KR,Korea Telecom
-27.117.253.14,50001,KR,SK Broadband Co Ltd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
