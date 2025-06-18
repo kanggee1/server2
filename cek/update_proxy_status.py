@@ -39,10 +39,14 @@ def check_proxy(row, api_url_template, dead_file):
     ip, port = row[0].strip(), row[1].strip()
     proxy_identifier = f"{ip}:{port}" # Buat identifikasi unik untuk setiap proxy
 
+    # Ambil informasi tambahan jika tersedia
+    country = row[2].strip() if len(row) > 2 else "N/A"
+    provider = row[3].strip() if len(row) > 3 else "N/A"
+
     # Cek apakah proxy ini sudah ada di daftar aktif_proxies_identifiers
     with active_proxies_identifiers_lock:
         if proxy_identifier in active_proxies_identifiers:
-            logging.info(f"{proxy_identifier} sudah ada di daftar aktif. Melewatkan pengecekan API.")
+            logging.info(f"{proxy_identifier} (sudah di daftar aktif) - Melewatkan pengecekan API.")
             return True # Anggap sudah diurus dan aktif
 
     api_url = api_url_template.format(ip=ip, port=port)
@@ -53,7 +57,10 @@ def check_proxy(row, api_url_template, dead_file):
         data = response.json()
 
         if data.get("status", "").lower() == "active":
-            logging.info(f"{proxy_identifier} is ✅ ACTIVE")
+            # Format log sesuai permintaan
+            log_message = f"[ALIVE] {proxy_identifier} - {country} - {provider}"
+            logging.info(log_message)
+
             with active_proxies_identifiers_lock:
                 # Tambahkan identifier ke set hanya jika belum ada
                 if proxy_identifier not in active_proxies_identifiers:
@@ -63,7 +70,10 @@ def check_proxy(row, api_url_template, dead_file):
                         active_proxies_data.append(row)
             return True  # Proxy hidup
         else:
-            logging.info(f"{proxy_identifier} is ❌ DEAD")
+            # Format log untuk DEAD
+            log_message = f"[DEAD] {proxy_identifier} - {country} - {provider}"
+            logging.info(log_message)
+
             with dead_proxies_count_lock:
                 global dead_proxies_count
                 dead_proxies_count += 1
