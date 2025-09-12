@@ -1,9 +1,6 @@
 name = "%worker_name%"
-main = "_worker.js"
-#main = "_worker_obfuscated.js"
+#main = "_worker.js"
+main = "_worker_obfuscated.js"
 compatibility_date = "2023-05-26"
 
 workers_dev = true
-
-[vars]
-CHECK_API_BASE = "https://ipcf.gpj.us.kg"
