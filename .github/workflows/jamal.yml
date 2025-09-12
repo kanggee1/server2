@@ -1,4 +1,4 @@
-name: 🌐 Deploy Vless Worker
+name: 🌐 Deploy Worker
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
       
 jobs:
   deploy:
-    name: 🚀 Deploy Cloudflare Worker
+    name: 🚀 Deploy
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -42,7 +42,7 @@ jobs:
           sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
 
       # Step 5: Obfuscate Worker Code
-      - name: 🔒 Obfuscate Worker Code
+      - name: 🔒 Obfuscate
         run: |
           javascript-obfuscator vless/_worker.js --output vless/_worker_obfuscated.js \
           --compact true \
