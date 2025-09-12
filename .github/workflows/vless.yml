@@ -38,13 +38,18 @@ jobs:
 
           echo "Updating WORKER_NAME to ${WORKER_NAME}"
           sed -i "s/%worker_name%/${WORKER_NAME}/g" ./vless/wrangler.toml
-          echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
-          sed -i "s/%domain_name%/${DOMAIN_NAME}/g" ./vless/wrangler.toml
+          
+          if [ ! -z "${DOMAIN_NAME}" ]; then
+            echo "Updating DOMAIN_NAME to ${DOMAIN_NAME}"
+            sed -i "s/#%domain_name%/route = \"${DOMAIN_NAME}\"\\nroutes = [\\n  { pattern = \"${DOMAIN_NAME}/*\" }\\n]/" ./vless/wrangler.toml
+          else
+            echo "No custom domain provided. Skipping DOMAIN_NAME update."
+          fi
 
       # Step 5: Obfuscate Worker Code
       - name: 🔒 Obfuscate Worker Code
         run: |
-          javascript-obfuscator vless/_worker.js --output vless/_worker.js \
+          javascript-obfuscator vless/_worker.js --output vless/_worker_obfuscated.js \
           --compact true \
           --control-flow-flattening true \
           --control-flow-flattening-threshold 1 \
@@ -52,11 +57,14 @@ jobs:
           --dead-code-injection-threshold 1 \
           --identifier-names-generator hexadecimal \
           --rename-globals true \
+          --self-defending true \
           --string-array true \
-          --string-array-encoding 'rc4' \
+          --string-array-encoding 'base64' \
+          --string-array-rotate true \
           --string-array-threshold 1 \
           --transform-object-keys true \
-          --unicode-escape-sequence true
+          --unicode-escape-sequence true \
+          --debug-protection true
 
       # Step 6: Commit Obfuscated File
       - name: 📤 Commit Obfuscated File
@@ -71,7 +79,7 @@ jobs:
       - name: 🚀 Deploy to CF
         run: |
           cd vless
-          wrangler deploy --name ${{ github.event.inputs.WORKER_NAME }}
+          wrangler deploy --name ${{ github.event.inputs.WORKER_NAME }} --minify _worker_obfuscated.js
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
