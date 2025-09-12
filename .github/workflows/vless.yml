@@ -1,0 +1,74 @@
+name: 🌐 Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'vless/_worker.js'
+  workflow_dispatch:
+    inputs:
+      WORKER_NAME:
+        description: "🌟 Nama dari worker"
+        required: true
+        type: string
+
+jobs:
+  obfuscate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install JavaScript Obfuscator
+        run: npm install -g javascript-obfuscator
+
+      - name: Obfuscate code
+        run: |
+          javascript-obfuscator vless/_worker.js --output vless/_worker.js \
+          --compact true \
+          --control-flow-flattening true \
+          --control-flow-flattening-threshold 1 \
+          --dead-code-injection true \
+          --dead-code-injection-threshold 1 \
+          --identifier-names-generator hexadecimal \
+          --rename-globals true \
+          --string-array true \
+          --string-array-encoding 'rc4' \
+          --string-array-threshold 1 \
+          --transform-object-keys true \
+          --unicode-escape-sequence true
+
+      - name: Archive obfuscated code
+        uses: actions/upload-artifact@v3
+        with:
+          name: obfuscated-worker
+          path: vless/_worker.js
+          
+  deploy:
+    runs-on: ubuntu-latest
+    needs: obfuscate
+    environment: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download obfuscated code
+        uses: actions/download-artifact@v3
+        with:
+          name: obfuscated-worker
+          path: vless/
+          
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workerName: ${{ github.event.inputs.WORKER_NAME }}
