@@ -20,10 +20,10 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '16'
 
@@ -47,7 +47,7 @@ jobs:
           --unicode-escape-sequence true
 
       - name: Archive obfuscated code
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: obfuscated-worker
           path: vless/_worker.js
@@ -58,10 +58,10 @@ jobs:
     environment: production
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download obfuscated code
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: obfuscated-worker
           path: vless/
