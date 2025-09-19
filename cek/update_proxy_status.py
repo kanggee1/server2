@@ -119,7 +119,7 @@ def main():
     input_file = os.getenv("IP_FILE", "cek/file.txt")
     alive_file = os.getenv("ALIVE_FILE", "cek/proxyList.txt")
     dead_file = os.getenv("DEAD_FILE", "cek/dead.txt")
-    api_url_template = os.getenv("API_URL", "https://api.krikkrik.tech/check?ip={ip}:{port}")
+    api_url_template = os.getenv("API_URL", "https://geovpn.vercel.app/check?ip={ip}:{port}")
 
     # Kosongkan file sebelum digunakan kembali
     for file in (alive_file, dead_file):
